@@ -117,3 +117,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#DelphiCodeCoverage reports
+tests/Win32/Debug/coverage/*
