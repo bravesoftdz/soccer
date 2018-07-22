@@ -65,7 +65,9 @@ begin
           FDomain := LDomain;
           exit(i + 1)
         end;
-    end;
+    end
+    else
+      LCommand := LCommand + ch;
   end;
   raise EParserError.Create('No domain found');
 end;
@@ -86,13 +88,33 @@ var
   LCommand: string;
   LStartingPoint: integer;
   i: integer;
+  LAction: ISoccerAction;
 begin
   LStartingPoint := FindStartingToken(AScript);
   for i := LStartingPoint to AScript.Length - 1 do
   begin
     ch := AScript.Chars[i];
-    // Parse
+    if IsCommandSeparator(ch) then
+      if IsCommandEmpty(LCommand) then
+        continue
+      else
+      begin
+        { Is command, find an appropriate action }
+        LAction := FDomain.GetActionForCommand(LCommand.Trim);
+        LAction.WorkOnCommand(LCommand.Trim);
+        LCommand := '';
+      end
+    else
+      LCommand := LCommand + ch;
   end;
+  { Possibly there is some command left }
+  if LCommand <> '' then
+    if FDomain.SupportsCommand(LCommand) then
+    begin
+      LAction := FDomain.GetActionForCommand(LCommand);
+      LAction.WorkOnCommand(LCommand.Trim);
+    end;
+  Result := FDomain.GetOutput;
 end;
 
 end.

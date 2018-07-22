@@ -3,6 +3,7 @@ unit Soccer.Domain.Factory;
 interface
 
 uses
+  System.SysUtils,
   System.Generics.Collections,
 
   Soccer.Domain.Abstract;
@@ -12,10 +13,12 @@ type
   private
     FDomains: TList<ISoccerDomain>;
   public
+    constructor Create;
     property Domains: TList<ISoccerDomain> read FDomains;
+    destructor Destroy; override;
   end;
 
-  function GlobalDomainFactory: TSoccerDomainFactory;
+function GlobalDomainFactory: TSoccerDomainFactory;
 
 implementation
 
@@ -26,7 +29,25 @@ function GlobalDomainFactory: TSoccerDomainFactory;
 begin
   if not Assigned(GDomainFactory) then
     GDomainFactory := TSoccerDomainFactory.Create;
-  Result := GlobalDomainFactory;
+  Result := GDomainFactory;
 end;
+
+{ TSoccerDomainFactory }
+
+constructor TSoccerDomainFactory.Create;
+begin
+  FDomains := TList<ISoccerDomain>.Create;
+end;
+
+destructor TSoccerDomainFactory.Destroy;
+begin
+  FreeAndNil(FDomains);
+  inherited;
+end;
+
+initialization
+
+// Create the global factory in the beginning of program (good for tests)
+GlobalDomainFactory();
 
 end.
