@@ -69,7 +69,7 @@ begin
     else
       LCommand := LCommand + ch;
   end;
-  raise EParserError.Create('No domain found');
+  raise ESoccerParserException.Create('No domain found');
 end;
 
 function TSoccerParser.IsCommandEmpty(ACommand: string): boolean;

@@ -1,4 +1,4 @@
-unit SoccerTets.SoccerParserTests;
+unit SoccerTests.SoccerParserTests;
 
 interface
 
@@ -9,6 +9,7 @@ uses
   DUnitX.TestFramework,
 
   Soccer.Parser,
+  Soccer.Exceptions,
   Soccer.Domain.Abstract,
   Soccer.Domain.Factory;
 
@@ -41,6 +42,12 @@ type
   public
     [Test]
     procedure FullTest;
+    [Test]
+    procedure FullTest2;
+    [Test]
+    procedure NoDomainFoundTest;
+    [Test]
+    procedure NoStartTest;
   end;
 
 implementation
@@ -64,6 +71,57 @@ begin
   FreeAndNil(LFactory);
   FreeAndNil(LParser);
   FreeAndNil(LOutput);
+end;
+
+procedure TSoccerParserTests.FullTest2;
+var
+  LParser: TSoccerParser;
+  LFactory: TSoccerDomainFactory;
+  LDomain: TTestDomain;
+  LOutput: TList<AnsiString>;
+begin
+  LFactory := TSoccerDomainFactory.Create;
+  LDomain := TTestDomain.Create;
+  LFactory.Domains.Add(LDomain);
+  LParser := TSoccerParser.Create(LFactory);
+  LOutput := LParser.ParseExecuteScript('START[test]   TEST  ');
+  Assert.IsTrue(LOutput[0] = 'THIS IS');
+  Assert.IsTrue(LOutput[1] = 'SPARTA!!!');
+  FreeAndNil(LFactory);
+  FreeAndNil(LParser);
+  FreeAndNil(LOutput);
+end;
+
+procedure TSoccerParserTests.NoDomainFoundTest;
+var
+  LParser: TSoccerParser;
+  LFactory: TSoccerDomainFactory;
+begin
+  LFactory := TSoccerDomainFactory.Create;
+  LParser := TSoccerParser.Create(LFactory);
+  Assert.WillRaise(
+    procedure
+    begin
+      LParser.ParseExecuteScript('NOPE');
+    end, ESoccerParserException);
+  FreeAndNil(LFactory);
+  FreeAndNil(LParser);
+end;
+
+procedure TSoccerParserTests.NoStartTest;
+var
+  LFactory: TSoccerDomainFactory;
+  LParser: TSoccerParser;
+begin
+  LFactory := TSoccerDomainFactory.Create;
+  LParser := TSoccerParser.Create(LFactory);
+  Assert.WillRaise(
+    procedure
+    begin
+      LParser.ParseExecuteScript(' LOL ');
+    end, ESoccerParserException);
+  FreeAndNil(LParser);
+  FreeAndNil(LFactory);
 end;
 
 { TTestDomain }

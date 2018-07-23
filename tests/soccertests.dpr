@@ -27,7 +27,8 @@ uses
   Soccer.Domain.Abstract in '..\core\src\Soccer.Domain.Abstract.pas',
   Soccer.Domain.Factory in '..\core\src\Soccer.Domain.Factory.pas',
   SoccerTests.DomainFactoryTests in 'SoccerTests.DomainFactoryTests.pas',
-  SoccerTets.SoccerParserTests in 'SoccerTets.SoccerParserTests.pas';
+  SoccerTests.SoccerParserTests in 'SoccerTests.SoccerParserTests.pas',
+  SoccerTests.MainTests in 'SoccerTests.MainTests.pas';
 
 var
   runner: ITestRunner;
