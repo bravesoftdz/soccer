@@ -96,6 +96,11 @@
         <DCCReference Include="..\core\src\Soccer.Exceptions.pas"/>
         <DCCReference Include="..\core\src\Soccer.Domain.Factory.pas"/>
         <DCCReference Include="..\core\src\Soccer.Domain.Abstract.pas"/>
+        <DCCReference Include="..\core\src\Soccer.Voting.Domain.pas"/>
+        <DCCReference Include="..\core\src\Soccer.Voting.Actions.pas"/>
+        <DCCReference Include="..\core\src\Soccer.Voting.RulesDict.pas"/>
+        <DCCReference Include="..\core\src\Soccer.Voting.AbstractRule.pas"/>
+        <DCCReference Include="..\core\src\Soccer.Voting.RulePreferenceList.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
