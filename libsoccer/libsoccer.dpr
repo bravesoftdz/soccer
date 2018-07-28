@@ -13,7 +13,8 @@ uses
   Soccer.Voting.Actions in '..\core\src\Soccer.Voting.Actions.pas',
   Soccer.Voting.RulesDict in '..\core\src\Soccer.Voting.RulesDict.pas',
   Soccer.Voting.AbstractRule in '..\core\src\Soccer.Voting.AbstractRule.pas',
-  Soccer.Voting.RulePreferenceList in '..\core\src\Soccer.Voting.RulePreferenceList.pas';
+  Soccer.Voting.RulePreferenceList in '..\core\src\Soccer.Voting.RulePreferenceList.pas',
+  Soccer.Voting.Preferences in '..\core\src\Soccer.Voting.Preferences.pas';
 
 {$R *.res}
 

@@ -4,7 +4,7 @@ interface
 
 type
   ISoccerVotingRule = interface
-
+    function GetName: string;
   end;
 
 implementation

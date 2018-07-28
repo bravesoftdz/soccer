@@ -3,30 +3,89 @@ unit Soccer.Voting.RulePreferenceList;
 interface
 
 uses
+  System.SysUtils,
+  System.Classes,
+  System.Generics.Collections,
+
   Soccer.Voting.AbstractRule;
 
 type
   TSoccerVotingRulePreferenceList = class
+  private
+    FList: TList<ISoccerVotingRule>;
+    FPreferenceFile: string;
+    function IsBiggerThan(ARule: ISoccerVotingRule;
+      ALessPreferred: ISoccerVotingRule): boolean;
+  public
+    constructor Create(APreferenceFileName: string);
     procedure Add(ARule: ISoccerVotingRule);
+    destructor Destroy; override;
   end;
 
-function GlobalRulePreferenceList: TSoccerVotingRulePreferenceList;
+function GetPreferenceFilePath: string;
 
 implementation
 
 var
   GRulePreferenceList: TSoccerVotingRulePreferenceList;
 
-function GlobalRulePreferenceList: TSoccerVotingRulePreferenceList;
+function GetPreferenceFilePath: string;
 begin
-
+{$IFDEF DEBUG}
+  Result := '..\..\..\..\deploy\data\rules.cfg';
+{$ELSE}
+  Result := 'rules.cfg';
+{$ENDIF}
 end;
 
 { TSoccerVotingRulePreferenceList }
 
 procedure TSoccerVotingRulePreferenceList.Add(ARule: ISoccerVotingRule);
+var
+  i: Integer;
 begin
+  for i := 0 to FList.Count - 1 do
+  begin
+    if IsBiggerThan(ARule, FList[i]) then
+    begin
+      FList.Insert(i, ARule);
+      exit;
+    end;
+  end;
+  FList.Add(ARule);
+end;
 
+constructor TSoccerVotingRulePreferenceList.Create(APreferenceFileName: string);
+begin
+  FList := TList<ISoccerVotingRule>.Create;
+  FPreferenceFile := APreferenceFileName;
+end;
+
+destructor TSoccerVotingRulePreferenceList.Destroy;
+begin
+  FreeAndNil(FList);
+  inherited;
+end;
+
+function TSoccerVotingRulePreferenceList.IsBiggerThan(ARule, ALessPreferred
+  : ISoccerVotingRule): boolean;
+var
+  LStr: string;
+  LStringList: TStringList;
+begin
+  Result := false;
+  LStringList := TStringList.Create;
+  LStringList.LoadFromFile(FPreferenceFile);
+  for LStr in LStringList do
+  begin
+    if ARule.GetName = LStr.Trim then
+    begin
+      Result := true;
+      exit;
+    end;
+    if ALessPreferred.GetName = LStr.Trim then
+      exit;
+  end;
 end;
 
 end.

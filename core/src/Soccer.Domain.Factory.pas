@@ -45,9 +45,4 @@ begin
   inherited;
 end;
 
-initialization
-
-// Create the global factory in the beginning of program (good for tests)
-GlobalDomainFactory();
-
 end.
