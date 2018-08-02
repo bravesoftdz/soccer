@@ -25,6 +25,8 @@ type
   [TestFixture]
   TSoccerDomainFactoryTests = class(TObject)
   public
+    [SetupFixture]
+    procedure InitializeEncodings;
     [Test]
     procedure FactoryTest;
     [Test]
@@ -47,7 +49,13 @@ end;
 
 procedure TSoccerDomainFactoryTests.GlobalFactoryTest;
 begin
-  Assert.IsTrue(GlobalDomainFactory.Domains.Count = 0);
+  Assert.IsTrue(GlobalDomainFactory.Domains.Count = 1);
+end;
+
+procedure TSoccerDomainFactoryTests.InitializeEncodings;
+begin
+  TEncoding.Unicode;
+  TEncoding.BigEndianUnicode;
 end;
 
 { TFakeDomain }

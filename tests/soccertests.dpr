@@ -28,7 +28,15 @@ uses
   Soccer.Domain.Factory in '..\core\src\Soccer.Domain.Factory.pas',
   SoccerTests.DomainFactoryTests in 'SoccerTests.DomainFactoryTests.pas',
   SoccerTests.SoccerParserTests in 'SoccerTests.SoccerParserTests.pas',
-  SoccerTests.MainTests in 'SoccerTests.MainTests.pas';
+  SoccerTests.MainTests in 'SoccerTests.MainTests.pas',
+  Soccer.Voting.AbstractRule in '..\core\src\Soccer.Voting.AbstractRule.pas',
+  Soccer.Voting.Actions in '..\core\src\Soccer.Voting.Actions.pas',
+  Soccer.Voting.Domain in '..\core\src\Soccer.Voting.Domain.pas',
+  Soccer.Voting.Preferences in '..\core\src\Soccer.Voting.Preferences.pas',
+  Soccer.Voting.RulePreferenceList in '..\core\src\Soccer.Voting.RulePreferenceList.pas',
+  Soccer.Voting.RulesDict in '..\core\src\Soccer.Voting.RulesDict.pas',
+  SoccerTests.VotingRulesDictTests in 'SoccerTests.VotingRulesDictTests.pas',
+  SoccerTests.VotingRulePreferenceListTests in 'SoccerTests.VotingRulePreferenceListTests.pas';
 
 var
   runner: ITestRunner;

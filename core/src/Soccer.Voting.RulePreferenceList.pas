@@ -16,18 +16,19 @@ type
     FPreferenceFile: string;
     function IsBiggerThan(ARule: ISoccerVotingRule;
       ALessPreferred: ISoccerVotingRule): boolean;
+    function GetItems(i: integer): ISoccerVotingRule;
+    function GetCount: integer;
   public
     constructor Create(APreferenceFileName: string);
     procedure Add(ARule: ISoccerVotingRule);
+    property Items[i: integer]: ISoccerVotingRule read GetItems;
+    property Count: integer read GetCount;
     destructor Destroy; override;
   end;
 
 function GetPreferenceFilePath: string;
 
 implementation
-
-var
-  GRulePreferenceList: TSoccerVotingRulePreferenceList;
 
 function GetPreferenceFilePath: string;
 begin
@@ -42,7 +43,7 @@ end;
 
 procedure TSoccerVotingRulePreferenceList.Add(ARule: ISoccerVotingRule);
 var
-  i: Integer;
+  i: integer;
 begin
   for i := 0 to FList.Count - 1 do
   begin
@@ -67,6 +68,17 @@ begin
   inherited;
 end;
 
+function TSoccerVotingRulePreferenceList.GetCount: integer;
+begin
+  Result := FList.Count;
+end;
+
+function TSoccerVotingRulePreferenceList.GetItems(i: integer)
+  : ISoccerVotingRule;
+begin
+  Result := FList[i];
+end;
+
 function TSoccerVotingRulePreferenceList.IsBiggerThan(ARule, ALessPreferred
   : ISoccerVotingRule): boolean;
 var
@@ -75,16 +87,20 @@ var
 begin
   Result := false;
   LStringList := TStringList.Create;
-  LStringList.LoadFromFile(FPreferenceFile);
-  for LStr in LStringList do
-  begin
-    if ARule.GetName = LStr.Trim then
+  try
+    LStringList.LoadFromFile(FPreferenceFile);
+    for LStr in LStringList do
     begin
-      Result := true;
-      exit;
+      if ARule.GetName = LStr.Trim then
+      begin
+        Result := true;
+        exit;
+      end;
+      if ALessPreferred.GetName = LStr.Trim then
+        exit;
     end;
-    if ALessPreferred.GetName = LStr.Trim then
-      exit;
+  finally
+    FreeAndNil(LStringList);
   end;
 end;
 
