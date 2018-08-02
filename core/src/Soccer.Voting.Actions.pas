@@ -59,8 +59,8 @@ begin
   LMatch := RegEx.Match(ACommand);
   LRuleName := LMatch.Groups[1].Value;
   if not FVotingRulesDict.Rules.ContainsKey(LRuleName) then
-    raise ESoccerParserException.Create('No rule with a name ' + LRuleName +
-      ' found');
+    raise ESoccerParserException.Create('No rule with a name "' + LRuleName +
+      '" found');
   LRule := FVotingRulesDict.Rules[LRuleName];
   FRulePreferenceList.Add(LRule);
 end;
@@ -86,6 +86,7 @@ begin
     begin
       Result.Add(LAlternativeName.Trim);
       LAlternativeName := '';
+      continue;
     end;
     if ch = '>' then
       continue;

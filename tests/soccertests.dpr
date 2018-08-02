@@ -36,7 +36,8 @@ uses
   Soccer.Voting.RulePreferenceList in '..\core\src\Soccer.Voting.RulePreferenceList.pas',
   Soccer.Voting.RulesDict in '..\core\src\Soccer.Voting.RulesDict.pas',
   SoccerTests.VotingRulesDictTests in 'SoccerTests.VotingRulesDictTests.pas',
-  SoccerTests.VotingRulePreferenceListTests in 'SoccerTests.VotingRulePreferenceListTests.pas';
+  SoccerTests.VotingRulePreferenceListTests in 'SoccerTests.VotingRulePreferenceListTests.pas',
+  SoccerTests.VotingActionTests in 'SoccerTests.VotingActionTests.pas';
 
 var
   runner: ITestRunner;

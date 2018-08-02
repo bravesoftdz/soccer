@@ -75,7 +75,8 @@ end;
 
 function TSoccerVotingDomain.SupportsCommand(ACommand: string): Boolean;
 begin
-
+  Result := TRegEx.IsMatch(ACommand, 'IMPORT\[(.*)\]') or
+    TRegEx.IsMatch(ACommand, 'VOTE\((.*)\)');
 end;
 
 initialization

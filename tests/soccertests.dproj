@@ -108,6 +108,7 @@
         <DCCReference Include="..\core\src\Soccer.Voting.RulesDict.pas"/>
         <DCCReference Include="SoccerTests.VotingRulesDictTests.pas"/>
         <DCCReference Include="SoccerTests.VotingRulePreferenceListTests.pas"/>
+        <DCCReference Include="SoccerTests.VotingActionTests.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -18,7 +18,7 @@ type
   public
     constructor Create;
     property Profile: TSoccerVotingCollectivePreferenceProfile read FProfile;
-    destructor Destroy;
+    destructor Destroy; override;
   end;
 
 implementation
