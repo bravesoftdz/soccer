@@ -14,7 +14,9 @@ uses
   Soccer.Voting.RulesDict in '..\core\src\Soccer.Voting.RulesDict.pas',
   Soccer.Voting.AbstractRule in '..\core\src\Soccer.Voting.AbstractRule.pas',
   Soccer.Voting.RulePreferenceList in '..\core\src\Soccer.Voting.RulePreferenceList.pas',
-  Soccer.Voting.Preferences in '..\core\src\Soccer.Voting.Preferences.pas';
+  Soccer.Voting.Preferences in '..\core\src\Soccer.Voting.Preferences.pas',
+  Soccer.Voting.RuleChooser in '..\core\src\Soccer.Voting.RuleChooser.pas',
+  Soccer.VotingRules.Plurality in '..\core\src\Soccer.VotingRules.Plurality.pas';
 
 {$R *.res}
 

@@ -5,6 +5,7 @@ interface
 uses
   System.SysUtils,
   System.RegularExpressions,
+  System.Generics.Collections,
 
   Soccer.Exceptions,
 
@@ -13,7 +14,8 @@ uses
   Soccer.Voting.RulesDict,
   Soccer.Voting.RulePreferenceList,
   Soccer.Voting.AbstractRule,
-  Soccer.Voting.Preferences;
+  Soccer.Voting.Preferences,
+  Soccer.Voting.RuleChooser;
 
 type
   TSoccerVotingImportAction = class(TInterfacedObject, ISoccerAction)
@@ -34,6 +36,20 @@ type
   public
     constructor Create(AVotePreferences: TSoccerVotingVotersPreferences);
     procedure WorkOnCommand(ACommand: string);
+  end;
+
+  TSoccerDecideAction = class(TInterfacedObject, ISoccerAction)
+  private
+    FPreferenceProfile: TSoccerVotingVotersPreferences;
+    FRulesList: TSoccerVotingRulePreferenceList;
+    FResult: TList<AnsiString>;
+    FRuleChooser: IRuleChooser;
+  public
+    constructor Create(APreferenceProfile
+  : TSoccerVotingVotersPreferences; ARulesList: TSoccerVotingRulePreferenceList;
+  var AResult: TList<AnsiString>; ARuleChooser: IRuleChooser);
+    procedure WorkOnCommand(ACommand: string);
+    destructor Destroy; override;
   end;
 
 implementation
@@ -106,6 +122,36 @@ begin
   LPreference := RegEx.Match(ACommand).Groups[1].Value;
   LNewProfile := ExtractProfile(LPreference);
   FPreferenceStorage.Profile.Add(LNewProfile);
+end;
+
+{ TSoccerDecideAction }
+
+constructor TSoccerDecideAction.Create(APreferenceProfile
+  : TSoccerVotingVotersPreferences; ARulesList: TSoccerVotingRulePreferenceList;
+  var AResult: TList<AnsiString>; ARuleChooser: IRuleChooser);
+begin
+  FRulesList := ARulesList;
+  FPreferenceProfile := APreferenceProfile;
+  FResult := AResult;
+  FRuleChooser := ARuleChooser;
+end;
+
+destructor TSoccerDecideAction.Destroy;
+begin
+  FRulesList := nil;
+  FPreferenceProfile := nil;
+  FRuleChooser := nil;
+  inherited;
+end;
+
+procedure TSoccerDecideAction.WorkOnCommand(ACommand: string);
+var
+  LRule: ISoccerVotingRule;
+begin
+  if not (ACommand = 'DECIDE!') then
+    raise ESoccerParserException.Create('Command is not "DECIDE!"');
+  LRule := FRuleChooser.ChooseRule(FPreferenceProfile, FRulesList);
+  FResult := LRule.ExecuteOn(FPreferenceProfile);
 end;
 
 end.

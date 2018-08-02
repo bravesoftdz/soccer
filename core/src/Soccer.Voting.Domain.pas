@@ -15,13 +15,15 @@ uses
   Soccer.Voting.Actions,
   Soccer.Voting.RulesDict,
   Soccer.Voting.RulePreferenceList,
-  Soccer.Voting.Preferences;
+  Soccer.Voting.Preferences,
+  Soccer.Voting.RuleChooser;
 
 type
   TSoccerVotingDomain = class(TInterfacedObject, ISoccerDomain)
   private
     FRulePreferenceList: TSoccerVotingRulePreferenceList;
     FVotersPreferenceProfile: TSoccerVotingVotersPreferences;
+    FOutput: TList<AnsiString>;
   public
     constructor Create;
     function AmIStarted(AWhatIsStarted: string): Boolean;
@@ -45,6 +47,7 @@ begin
   FRulePreferenceList := TSoccerVotingRulePreferenceList.Create
     (GetPreferenceFilePath);
   FVotersPreferenceProfile := TSoccerVotingVotersPreferences.Create;
+  FOutput := nil;
 end;
 
 destructor TSoccerVotingDomain.Destroy;
@@ -63,6 +66,9 @@ begin
       FRulePreferenceList);
   if TRegEx.IsMatch(ACommand, 'VOTE\((.*)\)') then
     Result := TSoccerVoteAction.Create(FVotersPreferenceProfile);
+  if ACommand = 'DECIDE!' then
+    Result := TSoccerDecideAction.Create(FVotersPreferenceProfile,
+      FRulePreferenceList, FOutput, GetDefaultRuleChooser);
   if not Assigned(Result) then
     raise ESoccerParserException.Create('Unknown command: ' + ACommand);
 end;
@@ -70,7 +76,9 @@ end;
 function TSoccerVotingDomain.GetOutput
   : System.Generics.Collections.TList<System.AnsiString>;
 begin
-
+  if not Assigned(FOutput) then
+    raise ESoccerParserException.Create('No "DECIDE!" command found');
+  Result := FOutput;
 end;
 
 function TSoccerVotingDomain.SupportsCommand(ACommand: string): Boolean;

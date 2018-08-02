@@ -37,7 +37,7 @@ end;
 
 function TSoccer.ExecScript(AScript: AnsiString): TList<AnsiString>;
 begin
-  Result := FParser.ParseExecuteScript(AScript);
+  Result := FParser.ParseExecuteScript(string(AScript));
 end;
 
 end.

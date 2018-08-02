@@ -102,6 +102,12 @@ begin
         { Is command, find an appropriate action }
         LAction := FDomain.GetActionForCommand(LCommand.Trim);
         LAction.WorkOnCommand(LCommand.Trim);
+        { "DECIDE!" is always the last command }
+        if LCommand.Trim = 'DECIDE!' then
+        begin
+          LCommand := '';
+          break;
+        end;
         LCommand := '';
       end
     else
