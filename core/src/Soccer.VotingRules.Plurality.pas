@@ -54,7 +54,7 @@ var
   i: Integer;
 begin
   Result := TList<AnsiString>.Create;
-  for i := 0 to ACandidatesList.Count do
+  for i := 0 to ACandidatesList.Count-1 do
   begin
     if AScoresList[i] = AMaxScore then
       Result.Add(ACandidatesList[i]);
@@ -104,5 +104,13 @@ function TSoccerPluralityVotingRule.GetName: string;
 begin
   Result := 'plurality';
 end;
+
+var
+  LRule: TSoccerPluralityVotingRule;
+
+initialization
+
+LRule := TSoccerPluralityVotingRule.Create;
+GlobalVotingRulesDict.Rules.Add(LRule.GetName, LRule);
 
 end.

@@ -23,6 +23,7 @@ type
   public
     constructor Create(ADomainFactory: TSoccerDomainFactory);
     function ParseExecuteScript(AScript: string): TList<AnsiString>;
+    destructor Destroy; override;
   end;
 
 implementation
@@ -32,6 +33,13 @@ implementation
 constructor TSoccerParser.Create(ADomainFactory: TSoccerDomainFactory);
 begin
   FDomainFactory := ADomainFactory;
+end;
+
+destructor TSoccerParser.Destroy;
+begin
+  if Assigned(FDomain) then
+    FDomain.DeInitialize;
+  inherited;
 end;
 
 function TSoccerParser.FindStartingToken(AScript: string): integer;
@@ -63,6 +71,7 @@ begin
         if LDomain.AmIStarted(LWhatIsStarted) then
         begin
           FDomain := LDomain;
+          FDomain.Initialize;
           exit(i + 1)
         end;
     end
@@ -100,15 +109,22 @@ begin
       else
       begin
         { Is command, find an appropriate action }
-        LAction := FDomain.GetActionForCommand(LCommand.Trim);
-        LAction.WorkOnCommand(LCommand.Trim);
-        { "DECIDE!" is always the last command }
-        if LCommand.Trim = 'DECIDE!' then
+        if FDomain.SupportsCommand(LCommand) then
         begin
+          LAction := FDomain.GetActionForCommand(LCommand.Trim);
+          LAction.WorkOnCommand(LCommand.Trim);
+          { "DECIDE!" is always the last command }
+          if LCommand.Trim = 'DECIDE!' then
+          begin
+            LCommand := '';
+            break;
+          end;
           LCommand := '';
-          break;
-        end;
-        LCommand := '';
+        end
+        else
+          { If command is not supported by a domain }
+          raise ESoccerParserException.Create('Unknown command: "' +
+            LCommand + '"');
       end
     else
       LCommand := LCommand + ch;

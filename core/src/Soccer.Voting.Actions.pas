@@ -43,11 +43,11 @@ type
     FPreferenceProfile: TSoccerVotingVotersPreferences;
     FRulesList: TSoccerVotingRulePreferenceList;
     FResult: TList<AnsiString>;
-    FRuleChooser: IRuleChooser;
+    FRuleChooser: ISoccerVotingRuleChooser;
   public
-    constructor Create(APreferenceProfile
-  : TSoccerVotingVotersPreferences; ARulesList: TSoccerVotingRulePreferenceList;
-  var AResult: TList<AnsiString>; ARuleChooser: IRuleChooser);
+    constructor Create(APreferenceProfile: TSoccerVotingVotersPreferences;
+      ARulesList: TSoccerVotingRulePreferenceList;
+      var AResult: TList<AnsiString>; ARuleChooser: ISoccerVotingRuleChooser);
     procedure WorkOnCommand(ACommand: string);
     destructor Destroy; override;
   end;
@@ -128,7 +128,7 @@ end;
 
 constructor TSoccerDecideAction.Create(APreferenceProfile
   : TSoccerVotingVotersPreferences; ARulesList: TSoccerVotingRulePreferenceList;
-  var AResult: TList<AnsiString>; ARuleChooser: IRuleChooser);
+  var AResult: TList<AnsiString>; ARuleChooser: ISoccerVotingRuleChooser);
 begin
   FRulesList := ARulesList;
   FPreferenceProfile := APreferenceProfile;
@@ -147,11 +147,15 @@ end;
 procedure TSoccerDecideAction.WorkOnCommand(ACommand: string);
 var
   LRule: ISoccerVotingRule;
+  LResult: TList<AnsiString>;
 begin
-  if not (ACommand = 'DECIDE!') then
+  if not(ACommand = 'DECIDE!') then
     raise ESoccerParserException.Create('Command is not "DECIDE!"');
   LRule := FRuleChooser.ChooseRule(FPreferenceProfile, FRulesList);
-  FResult := LRule.ExecuteOn(FPreferenceProfile);
+  LResult := LRule.ExecuteOn(FPreferenceProfile);
+  FResult.Add('plurality');
+  FResult.AddRange(LResult.ToArray);
+  FreeAndNil(LResult);
 end;
 
 end.

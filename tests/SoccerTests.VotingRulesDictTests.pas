@@ -5,7 +5,9 @@ interface
 uses
   System.SysUtils,
   System.Classes,
+  System.Generics.Collections,
 
+  Soccer.Voting.Preferences,
   Soccer.Voting.RulesDict,
   Soccer.Voting.AbstractRule,
 
@@ -27,6 +29,7 @@ type
   TFakeVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   public
     function GetName: string;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
   end;
 
 implementation
@@ -40,7 +43,7 @@ end;
 
 procedure TVotingRulesDictTest.GlobalDictTest;
 begin
-  Assert.IsTrue(GlobalVotingRulesDict.Rules.Count = 0);
+  Assert.IsTrue(GlobalVotingRulesDict.Rules.Count = 1);
 end;
 
 procedure TVotingRulesDictTest.VotingRulesDictTest;
@@ -56,6 +59,12 @@ begin
 end;
 
 { TFakeVotingRule }
+
+function TFakeVotingRule.ExecuteOn(
+  AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+begin
+  Result := nil;
+end;
 
 function TFakeVotingRule.GetName: string;
 begin

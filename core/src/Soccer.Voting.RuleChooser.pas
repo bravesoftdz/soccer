@@ -12,29 +12,29 @@ uses
   Soccer.Voting.Preferences;
 
 type
-  IRuleChooser = interface
+  ISoccerVotingRuleChooser = interface
     function ChooseRule(AProfile: TSoccerVotingVotersPreferences;
       ARules: TSoccerVotingRulePreferenceList): ISoccerVotingRule;
   end;
 
-  TRuleChooser = class(TInterfacedObject, IRuleChooser)
+  TSoccerRuleChooser = class(TInterfacedObject, ISoccerVotingRuleChooser)
   public
     function ChooseRule(AProfile: TSoccerVotingVotersPreferences;
       ARules: TSoccerVotingRulePreferenceList): ISoccerVotingRule;
   end;
 
-function GetDefaultRuleChooser: IRuleChooser;
+function GetDefaultRuleChooser: ISoccerVotingRuleChooser;
 
 implementation
 
-function GetDefaultRuleChooser: IRuleChooser;
+function GetDefaultRuleChooser: ISoccerVotingRuleChooser;
 begin
-  Result := TRuleChooser.Create;
+  Result := TSoccerRuleChooser.Create;
 end;
 
 { TRuleChooser }
 
-function TRuleChooser.ChooseRule(AProfile: TSoccerVotingVotersPreferences;
+function TSoccerRuleChooser.ChooseRule(AProfile: TSoccerVotingVotersPreferences;
   ARules: TSoccerVotingRulePreferenceList): ISoccerVotingRule;
 begin
   if ARules.Count = 0 then

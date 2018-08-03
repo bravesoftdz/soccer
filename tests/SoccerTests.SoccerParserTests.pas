@@ -26,6 +26,8 @@ type
     function GetOutput: System.Generics.Collections.TList<System.AnsiString>;
     function SupportsCommand(ACommand: string): Boolean;
     destructor Destroy; override;
+    procedure DeInitialize;
+    procedure Initialize;
   end;
 
   TTestDomainAction = class(TInterfacedObject, ISoccerAction)
@@ -48,6 +50,8 @@ type
     procedure NoDomainFoundTest;
     [Test]
     procedure NoStartTest;
+    [Test]
+    procedure UnknownCommandTest;
   end;
 
 implementation
@@ -124,6 +128,23 @@ begin
   FreeAndNil(LFactory);
 end;
 
+procedure TSoccerParserTests.UnknownCommandTest;
+var
+  LFactory: TSoccerDomainFactory;
+  LParser: TSoccerParser;
+begin
+  LFactory := TSoccerDomainFactory.Create;
+  LParser := TSoccerParser.Create(LFactory);
+  LFactory.Domains.Add(TTestDomain.Create);
+  Assert.WillRaise(
+  procedure
+  begin
+    LParser.ParseExecuteScript('START[test] UNKNOWN ');
+  end, ESoccerParserException, 'Unknown command: "UNKNOWN"');
+  FreeAndNil(LFactory);
+  FreeAndNil(LParser);
+end;
+
 { TTestDomain }
 
 procedure TTestDomain.AddToInput(ALine: string);
@@ -139,6 +160,11 @@ end;
 constructor TTestDomain.Create;
 begin
   FOutput := TList<AnsiString>.Create;
+end;
+
+procedure TTestDomain.DeInitialize;
+begin
+
 end;
 
 destructor TTestDomain.Destroy;
@@ -158,6 +184,11 @@ function TTestDomain.GetOutput: System.Generics.Collections.
 begin
   Result := FOutput;
   FOutput := TList<AnsiString>.Create;
+end;
+
+procedure TTestDomain.Initialize;
+begin
+
 end;
 
 function TTestDomain.SupportsCommand(ACommand: string): Boolean;

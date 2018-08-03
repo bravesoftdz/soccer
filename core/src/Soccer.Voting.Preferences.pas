@@ -27,8 +27,7 @@ type
     constructor Create;
     property Profile: TSoccerVotingCollectivePreferenceProfile read FProfile;
     property Properties: TSoccerVotersPreferencesProperties read GetProperties;
-    destructor Destroy;
-    override;
+    destructor Destroy; override;
   end;
 
 implementation
@@ -51,7 +50,8 @@ begin
   FreeAndNil(FProfile);
 end;
 
-function TSoccerVotingVotersPreferences.GetProperties: TSoccerVotersPreferencesProperties;
+function TSoccerVotingVotersPreferences.GetProperties
+  : TSoccerVotersPreferencesProperties;
 begin
   if not FPropertiesCalculated then
     CalculateProperties;

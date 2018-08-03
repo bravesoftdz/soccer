@@ -20,6 +20,8 @@ type
     function GetOutput: System.Generics.Collections.
       TList<System.AnsiString>;
     function SupportsCommand(ACommand: string): Boolean;
+    procedure DeInitialize;
+    procedure Initialize;
   end;
 
   [TestFixture]
@@ -65,6 +67,11 @@ begin
   Result := true;
 end;
 
+procedure TFakeDomain.DeInitialize;
+begin
+
+end;
+
 function TFakeDomain.GetActionForCommand(ACommand: string): ISoccerAction;
 begin
   Result := nil;
@@ -74,6 +81,11 @@ function TFakeDomain.GetOutput: System.Generics.Collections.
   TList<System.AnsiString>;
 begin
   Result := nil;
+end;
+
+procedure TFakeDomain.Initialize;
+begin
+
 end;
 
 function TFakeDomain.SupportsCommand(ACommand: string): Boolean;

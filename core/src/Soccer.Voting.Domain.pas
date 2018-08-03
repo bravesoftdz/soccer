@@ -25,12 +25,12 @@ type
     FVotersPreferenceProfile: TSoccerVotingVotersPreferences;
     FOutput: TList<AnsiString>;
   public
-    constructor Create;
+    procedure Initialize;
     function AmIStarted(AWhatIsStarted: string): Boolean;
     function GetActionForCommand(ACommand: string): ISoccerAction;
     function GetOutput: System.Generics.Collections.TList<System.AnsiString>;
     function SupportsCommand(ACommand: string): Boolean;
-    destructor Destroy; override;
+    procedure DeInitialize;
   end;
 
 implementation
@@ -42,19 +42,12 @@ begin
   Result := AWhatIsStarted = 'voting';
 end;
 
-constructor TSoccerVotingDomain.Create;
+procedure TSoccerVotingDomain.DeInitialize;
 begin
-  FRulePreferenceList := TSoccerVotingRulePreferenceList.Create
-    (GetPreferenceFilePath);
-  FVotersPreferenceProfile := TSoccerVotingVotersPreferences.Create;
-  FOutput := nil;
-end;
-
-destructor TSoccerVotingDomain.Destroy;
-begin
-  FreeAndNil(FRulePreferenceList);
-  FreeAndNil(FVotersPreferenceProfile);
-  inherited;
+  if Assigned(FRulePreferenceList) then
+    FreeAndNil(FRulePreferenceList);
+  if Assigned(FVotersPreferenceProfile) then
+    FreeAndNil(FVotersPreferenceProfile);
 end;
 
 function TSoccerVotingDomain.GetActionForCommand(ACommand: string)
@@ -67,10 +60,11 @@ begin
   if TRegEx.IsMatch(ACommand, 'VOTE\((.*)\)') then
     Result := TSoccerVoteAction.Create(FVotersPreferenceProfile);
   if ACommand = 'DECIDE!' then
+  begin
+    FOutput := TList<AnsiString>.Create;
     Result := TSoccerDecideAction.Create(FVotersPreferenceProfile,
       FRulePreferenceList, FOutput, GetDefaultRuleChooser);
-  if not Assigned(Result) then
-    raise ESoccerParserException.Create('Unknown command: ' + ACommand);
+  end;
 end;
 
 function TSoccerVotingDomain.GetOutput
@@ -81,10 +75,18 @@ begin
   Result := FOutput;
 end;
 
+procedure TSoccerVotingDomain.Initialize;
+begin
+  FRulePreferenceList := TSoccerVotingRulePreferenceList.Create
+    (GetPreferenceFilePath);
+  FVotersPreferenceProfile := TSoccerVotingVotersPreferences.Create;
+  FOutput := nil;
+end;
+
 function TSoccerVotingDomain.SupportsCommand(ACommand: string): Boolean;
 begin
   Result := TRegEx.IsMatch(ACommand, 'IMPORT\[(.*)\]') or
-    TRegEx.IsMatch(ACommand, 'VOTE\((.*)\)');
+    TRegEx.IsMatch(ACommand, 'VOTE\((.*)\)') or (ACommand = 'DECIDE!');
 end;
 
 initialization

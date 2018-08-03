@@ -4,7 +4,9 @@ interface
 
 uses
   System.SysUtils,
+  System.Generics.Collections,
 
+  Soccer.Voting.Preferences,
   Soccer.Voting.RulePreferenceList,
   Soccer.Voting.AbstractRule,
 
@@ -15,6 +17,8 @@ type
   [TestFixture]
   TVotingRulePreferenceListTests = class(TObject)
   public
+    [SetupFixture]
+    procedure InitilaizeEncodings;
     [Test]
     procedure InsertTwoRules;
     [Test]
@@ -24,16 +28,24 @@ type
   TFirstRule = class(TInterfacedObject, ISoccerVotingRule)
   public
     function GetName: string;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
   end;
 
   TSecondRule = class(TInterfacedObject, ISoccerVotingRule)
   public
     function GetName: string;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
   end;
 
 implementation
 
 { TVotingRulePreferenceListTests }
+
+procedure TVotingRulePreferenceListTests.InitilaizeEncodings;
+begin
+  TEncoding.Unicode;
+  TEncoding.BigEndianUnicode;
+end;
 
 procedure TVotingRulePreferenceListTests.InsertTwoRules;
 var
@@ -41,7 +53,7 @@ var
   LRule1, LRule2: ISoccerVotingRule;
 begin
   LList := TSoccerVotingRulePreferenceList.Create
-    ('.\testdata\rulepreferencelisttests.cfg');
+    ('..\..\testdata\rulepreferencelisttests.soccfg');
   LRule1 := TFirstRule.Create;
   LRule2 := TSecondRule.Create;
   LList.Add(LRule2);
@@ -58,7 +70,7 @@ var
   LRule1, LRule2: ISoccerVotingRule;
 begin
   LList := TSoccerVotingRulePreferenceList.Create
-    ('.\testdata\rulepreferencelisttests.cfg');
+    ('..\..\testdata\rulepreferencelisttests.soccfg');
   LRule1 := TFirstRule.Create;
   LRule2 := TSecondRule.Create;
   LList.Add(LRule1);
@@ -71,12 +83,24 @@ end;
 
 { TSecondRule }
 
+function TSecondRule.ExecuteOn(
+  AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+begin
+  Result := nil;
+end;
+
 function TSecondRule.GetName: string;
 begin
   Result := 'second';
 end;
 
 { TFirstRule }
+
+function TFirstRule.ExecuteOn(
+  AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+begin
+  Result := nil;
+end;
 
 function TFirstRule.GetName: string;
 begin

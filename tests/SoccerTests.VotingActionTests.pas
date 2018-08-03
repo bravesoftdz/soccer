@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils,
+  System.Generics.Collections,
 
   Soccer.Exceptions,
 
@@ -12,6 +13,7 @@ uses
   Soccer.Voting.RulesDict,
   Soccer.Voting.RulePreferenceList,
   Soccer.Voting.Preferences,
+  Soccer.Voting.RuleChooser,
 
   DUnitX.TestFramework;
 
@@ -29,12 +31,20 @@ type
   TFakeVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   public
     function GetName: string;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences)
+      : System.Generics.Collections.TList<System.AnsiString>;
   end;
 
   [TestFixture]
   TVoteActionTests = class(TObject)
     [Test]
     procedure FullTest;
+  end;
+
+  [TestFixture]
+  TDecideActionTests = class(TObject)
+    [Test]
+    procedure ComanndNotDecideTest;
   end;
 
 implementation
@@ -81,6 +91,12 @@ end;
 
 { TFakeVotingRule }
 
+function TFakeVotingRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences)
+  : System.Generics.Collections.TList<System.AnsiString>;
+begin
+  Result := nil;
+end;
+
 function TFakeVotingRule.GetName: string;
 begin
   Result := 'first';
@@ -103,9 +119,34 @@ begin
   FreeAndNil(LAction);
 end;
 
+{ TDecideActionTests }
+
+procedure TDecideActionTests.ComanndNotDecideTest;
+var
+  LAction: TSoccerDecideAction;
+  LProfile: TSoccerVotingVotersPreferences;
+  LList: TSoccerVotingRulePreferenceList;
+  LResult: TList<AnsiString>;
+  LRuleChooser: ISoccerVotingRuleChooser;
+begin
+  LList := TSoccerVotingRulePreferenceList.Create('..\..\testdata\empty.soccfg');
+  LProfile := TSoccerVotingVotersPreferences.Create;
+  LAction := TSoccerDecideAction.Create(LProfile,LList,LResult,LRuleChooser);
+  LRuleChooser := TSoccerRuleChooser.Create;
+  Assert.WillRaise(
+  procedure
+  begin
+    LAction.WorkOnCommand('NOTDECIDE!');
+  end, ESoccerParserException, 'Command is not "DECIDE!"');
+  FreeAndNil(LProfile);
+  FreeAndNil(LAction);
+  FreeAndNil(LList);
+end;
+
 initialization
 
 TDUnitX.RegisterTestFixture(TVotingImportActionTests);
 TDUnitX.RegisterTestFixture(TVoteActionTests);
+TDUnitX.RegisterTestFixture(TDecideActionTests);
 
 end.

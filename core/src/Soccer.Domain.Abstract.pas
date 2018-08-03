@@ -11,10 +11,12 @@ type
   end;
 
   ISoccerDomain = interface
+    procedure Initialize;
     function AmIStarted(AWhatIsStarted: string): boolean;
     function SupportsCommand(ACommand: string): boolean;
     function GetActionForCommand(ACommand: string): ISoccerAction;
     function GetOutput: TList<AnsiString>;
+    procedure DeInitialize;
   end;
 
 implementation
