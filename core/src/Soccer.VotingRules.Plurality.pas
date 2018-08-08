@@ -24,6 +24,7 @@ type
     function GetName: string;
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences)
       : System.Generics.Collections.TList<System.AnsiString>;
+    function IsAppliable(AProfile: TSoccerVotingVotersPreferences): boolean;
   end;
 
 implementation
@@ -103,6 +104,12 @@ end;
 function TSoccerPluralityVotingRule.GetName: string;
 begin
   Result := 'plurality';
+end;
+
+function TSoccerPluralityVotingRule.IsAppliable(
+  AProfile: TSoccerVotingVotersPreferences): boolean;
+begin
+  Result := true;
 end;
 
 var

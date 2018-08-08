@@ -33,9 +33,9 @@ implementation
 function GetPreferenceFilePath: string;
 begin
 {$IFDEF DEBUG}
-  Result := '..\..\..\..\deploy\data\rules.cfg';
+  Result := '..\..\..\..\deploy\data\rules.soccfg';
 {$ELSE}
-  Result := 'rules.cfg';
+  Result := 'rules.soccfg';
 {$ENDIF}
 end;
 

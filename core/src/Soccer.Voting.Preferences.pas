@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils,
+  System.Classes,
   System.Generics.Collections;
 
 type
@@ -13,7 +14,9 @@ type
     TObjectList<TSoccerVotingIndividualPreferenceProfile>;
 
   TSoccerVotersPreferencesProperties = record
-
+    AlternativesCount: integer;
+    VotersCount: integer;
+    Complete: boolean;
   end;
 
   TSoccerVotingVotersPreferences = class
@@ -23,9 +26,10 @@ type
     FPropertiesCalculated: boolean;
     function GetProperties: TSoccerVotersPreferencesProperties;
     procedure CalculateProperties;
+    function GetProfile: TSoccerVotingCollectivePreferenceProfile;
   public
     constructor Create;
-    property Profile: TSoccerVotingCollectivePreferenceProfile read FProfile;
+    property Profile: TSoccerVotingCollectivePreferenceProfile read GetProfile;
     property Properties: TSoccerVotersPreferencesProperties read GetProperties;
     destructor Destroy; override;
   end;
@@ -35,8 +39,25 @@ implementation
 { TSoccerVotingVoterPreferences }
 
 procedure TSoccerVotingVotersPreferences.CalculateProperties;
+var
+  LVoter: TSoccerVotingIndividualPreferenceProfile;
+  LAlternatives: TStringList;
+  LAlternative: string;
 begin
+  FProperties.VotersCount := FProfile.Count;
 
+  for LVoter in FProfile do
+  begin
+    for LAlternative in LVoter do
+      if LAlternatives.IndexOf(LAlternative) = -1 then
+        LAlternatives.Add(LAlternative);
+  end;
+  FProperties.AlternativesCount := LAlternatives.Count;
+
+  for LVoter in FProfile do
+  begin
+
+  end;
 end;
 
 constructor TSoccerVotingVotersPreferences.Create;
@@ -48,6 +69,13 @@ end;
 destructor TSoccerVotingVotersPreferences.Destroy;
 begin
   FreeAndNil(FProfile);
+end;
+
+function TSoccerVotingVotersPreferences.GetProfile
+  : TSoccerVotingCollectivePreferenceProfile;
+begin
+  Result := FProfile;
+  FPropertiesCalculated := false;
 end;
 
 function TSoccerVotingVotersPreferences.GetProperties

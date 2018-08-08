@@ -11,6 +11,7 @@ type
   ISoccerVotingRule = interface
     function GetName: string;
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences): TList<AnsiString>;
+    function IsAppliable(AProfile: TSoccerVotingVotersPreferences): boolean;
   end;
 
 implementation
