@@ -145,17 +145,10 @@ begin
 end;
 
 procedure TSoccerDecideAction.WorkOnCommand(ACommand: string);
-var
-  LRule: ISoccerVotingRule;
-  LResult: TList<AnsiString>;
 begin
   if not(ACommand = 'DECIDE!') then
     raise ESoccerParserException.Create('Command is not "DECIDE!"');
-  LRule := FRuleChooser.ChooseRule(FPreferenceProfile, FRulesList);
-  LResult := LRule.ExecuteOn(FPreferenceProfile);
-  FResult.Add('plurality');
-  FResult.AddRange(LResult.ToArray);
-  FreeAndNil(LResult);
+  FResult := FRuleChooser.ChooseRuleFindWinners(FPreferenceProfile, FRulesList);
 end;
 
 end.

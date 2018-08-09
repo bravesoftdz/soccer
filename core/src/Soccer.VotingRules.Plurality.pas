@@ -20,11 +20,11 @@ type
     function FindMaximalScore(AScoresList: TList<Integer>): Integer;
     function FindBestCandidates(ACandidatesList: TList<AnsiString>;
       AScoresList: TList<Integer>; AMaxScore: Integer): TList<AnsiString>;
+    function IsAppliable(AProfile: TSoccerVotingVotersPreferences): boolean;
   public
     function GetName: string;
-    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences)
-      : System.Generics.Collections.TList<System.AnsiString>;
-    function IsAppliable(AProfile: TSoccerVotingVotersPreferences): boolean;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: TList<AnsiString>): boolean;
   end;
 
 implementation
@@ -32,18 +32,21 @@ implementation
 { TSoccerPluralityVotingRule }
 
 function TSoccerPluralityVotingRule.ExecuteOn
-  (AProfile: TSoccerVotingVotersPreferences)
-  : System.Generics.Collections.TList<System.AnsiString>;
+  (AProfile: TSoccerVotingVotersPreferences;
+  out Winners: TList<AnsiString>): boolean;
 var
   LCandidates: TList<AnsiString>;
   LScores: TList<Integer>;
   LMax: Integer;
 begin
+  Result := IsAppliable(AProfile);
+  if not Result then
+    exit;
   LCandidates := TList<AnsiString>.Create;
   LScores := TList<Integer>.Create;
   CalculateScores(LCandidates, LScores, AProfile);
   LMax := FindMaximalScore(LScores);
-  Result := FindBestCandidates(LCandidates, LScores, LMax);
+  Winners := FindBestCandidates(LCandidates, LScores, LMax);
   FreeAndNil(LCandidates);
   FreeAndNil(LScores);
 end;
@@ -55,7 +58,7 @@ var
   i: Integer;
 begin
   Result := TList<AnsiString>.Create;
-  for i := 0 to ACandidatesList.Count-1 do
+  for i := 0 to ACandidatesList.Count - 1 do
   begin
     if AScoresList[i] = AMaxScore then
       Result.Add(ACandidatesList[i]);
@@ -106,8 +109,8 @@ begin
   Result := 'plurality';
 end;
 
-function TSoccerPluralityVotingRule.IsAppliable(
-  AProfile: TSoccerVotingVotersPreferences): boolean;
+function TSoccerPluralityVotingRule.IsAppliable
+  (AProfile: TSoccerVotingVotersPreferences): boolean;
 begin
   Result := true;
 end;

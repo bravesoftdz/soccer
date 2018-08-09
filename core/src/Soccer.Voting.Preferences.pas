@@ -42,6 +42,7 @@ procedure TSoccerVotingVotersPreferences.CalculateProperties;
 var
   LVoter: TSoccerVotingIndividualPreferenceProfile;
   LAlternatives: TStringList;
+  LAlternativesCopy: TStringList;
   LAlternative: string;
 begin
   FProperties.VotersCount := FProfile.Count;
@@ -54,9 +55,14 @@ begin
   end;
   FProperties.AlternativesCount := LAlternatives.Count;
 
+  FProperties.Complete := true;
   for LVoter in FProfile do
   begin
-
+    for LAlternative in LAlternatives do
+    begin
+      if LVoter.IndexOf(LAlternative) = -1 then
+        FProperties.Complete := false;
+    end;
   end;
 end;
 

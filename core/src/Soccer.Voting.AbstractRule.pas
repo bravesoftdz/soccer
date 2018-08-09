@@ -10,8 +10,8 @@ uses
 type
   ISoccerVotingRule = interface
     function GetName: string;
-    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences): TList<AnsiString>;
-    function IsAppliable(AProfile: TSoccerVotingVotersPreferences): boolean;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: TList<AnsiString>): boolean;
   end;
 
 implementation
