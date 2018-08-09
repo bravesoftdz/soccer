@@ -20,6 +20,8 @@ type
     procedure FullTest;
     [Test]
     procedure NoDecideCommand;
+    [Test]
+    procedure IncompletePreferencesTest;
   end;
 
 implementation
@@ -42,6 +44,21 @@ begin
   FreeAndNil(LSoccer);
 end;
 
+procedure TMainTests.IncompletePreferencesTest;
+var
+  LSoccer: TSoccer;
+begin
+  LSoccer := TSoccer.Create;
+  Assert.WillRaise(
+    procedure
+    begin
+      LSoccer.ExecScript('START[voting] ' + 'IMPORT[plurality] ' + 'VOTE(a->b) '
+        + 'VOTE(a->b->c) ' + 'DECIDE!')
+    end, ESoccerParserException,
+    'Incompete profiles are for now not supported');
+  FreeAndNil(LSoccer);
+end;
+
 procedure TMainTests.NoDecideCommand;
 var
   LSoccer: TSoccer;
@@ -49,11 +66,12 @@ var
 begin
   LSoccer := TSoccer.Create;
   Assert.WillRaise(
-  procedure
-  begin
-  LOutput := LSoccer.ExecScript('START[voting] ' + 'IMPORT[plurality] ' +
-    'VOTE(a->b->c) ' + 'VOTE(c->b->a) ' + 'VOTE(b->a->c) ' + 'VOTE(a->b->c) ');
-  end, ESoccerParserException, 'No "DECIDE!" command found');
+    procedure
+    begin
+      LOutput := LSoccer.ExecScript('START[voting] ' + 'IMPORT[plurality] ' +
+        'VOTE(a->b->c) ' + 'VOTE(c->b->a) ' + 'VOTE(b->a->c) ' +
+        'VOTE(a->b->c) ');
+    end, ESoccerParserException, 'No "DECIDE!" command found');
   FreeAndNil(LOutput);
   FreeAndNil(LSoccer);
 end;

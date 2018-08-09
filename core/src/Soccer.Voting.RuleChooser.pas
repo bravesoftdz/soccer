@@ -15,13 +15,13 @@ uses
 type
   ISoccerVotingRuleChooser = interface
     function ChooseRuleFindWinners(AProfile: TSoccerVotingVotersPreferences;
-      ARules: TSoccerVotingRulePreferenceList): TList<AnsiString>;
+      out ARules: TSoccerVotingRulePreferenceList): TList<AnsiString>;
   end;
 
   TSoccerRuleChooser = class(TInterfacedObject, ISoccerVotingRuleChooser)
   public
     function ChooseRuleFindWinners(AProfile: TSoccerVotingVotersPreferences;
-      ARules: TSoccerVotingRulePreferenceList)
+      out ARules: TSoccerVotingRulePreferenceList)
       : System.Generics.Collections.TList<System.AnsiString>;
   end;
 
@@ -38,25 +38,33 @@ end;
 
 function TSoccerRuleChooser.ChooseRuleFindWinners
   (AProfile: TSoccerVotingVotersPreferences;
-  ARules: TSoccerVotingRulePreferenceList)
+  out ARules: TSoccerVotingRulePreferenceList)
   : System.Generics.Collections.TList<System.AnsiString>;
 var
   i: integer;
   LRule: ISoccerVotingRule;
   LResult: TList<AnsiString>;
+  LRuleFound: Boolean;
 begin
+  LResult := nil;
   if not AProfile.Properties.Complete then
-    raise Exception.Create('Incompete profiles are for now not supported');
-  LResult := TList<AnsiString>.Create;
+    raise ESoccerParserException.Create
+      ('Incompete profiles are not supported for now');
   if ARules.Count = 0 then
     raise ESoccerParserException.Create('No rule was imported');
   for i := 0 to ARules.Count - 1 do
   begin
-    LResult.Clear;
-    LRule := ARules.Items[0];
+    LRule := ARules.Items[i];
     if LRule.ExecuteOn(AProfile, LResult) then
+    begin
+      LRuleFound := true;
       break;
+    end;
+    if Assigned(LResult) then
+      FreeAndNil(LResult);
   end;
+  if not LRuleFound then
+    raise ESoccerParserException.Create('No rule was found for your purposes');
   Result := TList<AnsiString>.Create;
   Result.Add(LRule.GetName);
   Result.AddRange(LResult.ToArray);

@@ -29,7 +29,8 @@ type
   TFakeVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   public
     function GetName: string;
-    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
   end;
 
 implementation
@@ -53,17 +54,17 @@ var
 begin
   LDict := TSoccerVotingRulesDict.Create;
   LRule := TFakeVotingRule.Create;
-  LDict.Rules.Add(LRule.GetName,LRule);
+  LDict.Rules.Add(LRule.GetName, LRule);
   Assert.IsTrue(LDict.Rules.Count = 1);
   FreeAndNil(LDict);
 end;
 
 { TFakeVotingRule }
 
-function TFakeVotingRule.ExecuteOn(
-  AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+function TFakeVotingRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
 begin
-  Result := nil;
+  Result := false;
 end;
 
 function TFakeVotingRule.GetName: string;

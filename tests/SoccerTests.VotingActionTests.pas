@@ -8,12 +8,15 @@ uses
 
   Soccer.Exceptions,
 
+  Soccer.Domain.Abstract,
+
   Soccer.Voting.AbstractRule,
   Soccer.Voting.Actions,
   Soccer.Voting.RulesDict,
   Soccer.Voting.RulePreferenceList,
   Soccer.Voting.Preferences,
   Soccer.Voting.RuleChooser,
+  Soccer.Voting.Domain,
 
   DUnitX.TestFramework;
 
@@ -31,8 +34,9 @@ type
   TFakeVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   public
     function GetName: string;
-    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences)
-      : System.Generics.Collections.TList<System.AnsiString>;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: System.Generics.Collections.
+      TList<System.AnsiString>): Boolean;
   end;
 
   [TestFixture]
@@ -45,6 +49,19 @@ type
   TDecideActionTests = class(TObject)
     [Test]
     procedure ComanndNotDecideTest;
+    [Test]
+    procedure WrongDomain;
+  end;
+
+  TFakeDomain = class(TInterfacedObject, ISoccerDomain)
+
+  public
+    function AmIStarted(AWhatIsStarted: string): Boolean;
+    procedure DeInitialize;
+    function GetActionForCommand(ACommand: string): ISoccerAction;
+    function GetOutput: System.Generics.Collections.TList<System.AnsiString>;
+    procedure Initialize;
+    function SupportsCommand(ACommand: string): Boolean;
   end;
 
 implementation
@@ -91,10 +108,10 @@ end;
 
 { TFakeVotingRule }
 
-function TFakeVotingRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences)
-  : System.Generics.Collections.TList<System.AnsiString>;
+function TFakeVotingRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
 begin
-  Result := nil;
+  Result := false;
 end;
 
 function TFakeVotingRule.GetName: string;
@@ -128,19 +145,71 @@ var
   LList: TSoccerVotingRulePreferenceList;
   LResult: TList<AnsiString>;
   LRuleChooser: ISoccerVotingRuleChooser;
+  LDomain: TSoccerVotingDomain;
 begin
-  LList := TSoccerVotingRulePreferenceList.Create('..\..\testdata\empty.soccfg');
+  LDomain := TSoccerVotingDomain.Create;
+  LList := TSoccerVotingRulePreferenceList.Create
+    ('..\..\testdata\empty.soccfg');
   LProfile := TSoccerVotingVotersPreferences.Create;
-  LAction := TSoccerDecideAction.Create(LProfile,LList,LResult,LRuleChooser);
+  LAction := TSoccerDecideAction.Create(LProfile, LList, LDomain, LRuleChooser);
   LRuleChooser := TSoccerRuleChooser.Create;
   Assert.WillRaise(
-  procedure
-  begin
-    LAction.WorkOnCommand('NOTDECIDE!');
-  end, ESoccerParserException, 'Command is not "DECIDE!"');
+    procedure
+    begin
+      LAction.WorkOnCommand('NOTDECIDE!');
+    end, ESoccerParserException, 'Command is not "DECIDE!"');
+  LDomain := nil;
   FreeAndNil(LProfile);
   FreeAndNil(LAction);
   FreeAndNil(LList);
+end;
+
+procedure TDecideActionTests.WrongDomain;
+var
+  LDomain: TFakeDomain;
+  LAction: TSoccerDecideAction;
+begin
+  LDomain := TFakeDomain.Create;
+  Assert.WillRaise(
+    procedure
+    begin
+      LAction := TSoccerDecideAction.Create(nil, nil, LDomain, nil);
+    end, ESoccerParserException,
+    'Internal error: soccer decide action is appliable only for voting domain');
+  LDomain := nil;
+end;
+
+{ TFakeDomain }
+
+function TFakeDomain.AmIStarted(AWhatIsStarted: string): Boolean;
+begin
+  Result := false;
+end;
+
+procedure TFakeDomain.DeInitialize;
+begin
+  Sleep(0);
+end;
+
+function TFakeDomain.GetActionForCommand(ACommand: string): ISoccerAction;
+begin
+  Result := nil;
+end;
+
+function TFakeDomain.GetOutput: System.Generics.Collections.
+  TList<System.AnsiString>;
+begin
+  Result := nil;
+end;
+
+procedure TFakeDomain.Initialize;
+begin
+  Sleep(0);
+end;
+
+function TFakeDomain.SupportsCommand(ACommand: string): Boolean;
+begin
+  Result := false;
 end;
 
 initialization

@@ -28,13 +28,15 @@ type
   TFirstRule = class(TInterfacedObject, ISoccerVotingRule)
   public
     function GetName: string;
-    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
   end;
 
   TSecondRule = class(TInterfacedObject, ISoccerVotingRule)
   public
     function GetName: string;
-    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+    function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
   end;
 
 implementation
@@ -83,10 +85,10 @@ end;
 
 { TSecondRule }
 
-function TSecondRule.ExecuteOn(
-  AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+function TSecondRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
 begin
-  Result := nil;
+  Result := false;
 end;
 
 function TSecondRule.GetName: string;
@@ -96,10 +98,10 @@ end;
 
 { TFirstRule }
 
-function TFirstRule.ExecuteOn(
-  AProfile: TSoccerVotingVotersPreferences): System.Generics.Collections.TList<System.AnsiString>;
+function TFirstRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
+      out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
 begin
-  Result := nil;
+  Result := false;
 end;
 
 function TFirstRule.GetName: string;

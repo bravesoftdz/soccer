@@ -42,17 +42,20 @@ type
   private
     FPreferenceProfile: TSoccerVotingVotersPreferences;
     FRulesList: TSoccerVotingRulePreferenceList;
-    FResult: TList<AnsiString>;
+    FDomain: ISoccerDomain;
     FRuleChooser: ISoccerVotingRuleChooser;
   public
     constructor Create(APreferenceProfile: TSoccerVotingVotersPreferences;
-      ARulesList: TSoccerVotingRulePreferenceList;
-      var AResult: TList<AnsiString>; ARuleChooser: ISoccerVotingRuleChooser);
+      ARulesList: TSoccerVotingRulePreferenceList; ADomain: ISoccerDomain;
+      ARuleChooser: ISoccerVotingRuleChooser);
     procedure WorkOnCommand(ACommand: string);
     destructor Destroy; override;
   end;
 
 implementation
+
+uses
+  Soccer.Voting.Domain;
 
 { TSoccerVotingImportAction }
 
@@ -128,12 +131,15 @@ end;
 
 constructor TSoccerDecideAction.Create(APreferenceProfile
   : TSoccerVotingVotersPreferences; ARulesList: TSoccerVotingRulePreferenceList;
-  var AResult: TList<AnsiString>; ARuleChooser: ISoccerVotingRuleChooser);
+  ADomain: ISoccerDomain; ARuleChooser: ISoccerVotingRuleChooser);
 begin
   FRulesList := ARulesList;
   FPreferenceProfile := APreferenceProfile;
-  FResult := AResult;
   FRuleChooser := ARuleChooser;
+  FDomain := ADomain;
+  if not(FDomain is TSoccerVotingDomain) then
+    raise ESoccerParserException.Create
+      ('Internal error: soccer decide action is appliable only for voting domain');
 end;
 
 destructor TSoccerDecideAction.Destroy;
@@ -148,7 +154,8 @@ procedure TSoccerDecideAction.WorkOnCommand(ACommand: string);
 begin
   if not(ACommand = 'DECIDE!') then
     raise ESoccerParserException.Create('Command is not "DECIDE!"');
-  FResult := FRuleChooser.ChooseRuleFindWinners(FPreferenceProfile, FRulesList);
+  (FDomain as TSoccerVotingDomain).Output := FRuleChooser.ChooseRuleFindWinners
+    (FPreferenceProfile, FRulesList);
 end;
 
 end.

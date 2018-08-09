@@ -45,6 +45,8 @@ var
   LAlternativesCopy: TStringList;
   LAlternative: string;
 begin
+  LAlternatives := TStringList.Create;
+
   FProperties.VotersCount := FProfile.Count;
 
   for LVoter in FProfile do
@@ -64,6 +66,8 @@ begin
         FProperties.Complete := false;
     end;
   end;
+
+  FreeAndNil(LAlternatives);
 end;
 
 constructor TSoccerVotingVotersPreferences.Create;

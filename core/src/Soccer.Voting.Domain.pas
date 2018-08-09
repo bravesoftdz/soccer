@@ -24,12 +24,14 @@ type
     FRulePreferenceList: TSoccerVotingRulePreferenceList;
     FVotersPreferenceProfile: TSoccerVotingVotersPreferences;
     FOutput: TList<AnsiString>;
+    function GetOutput: System.Generics.Collections.TList<System.AnsiString>;
+    procedure SetOutput(AValue: TList<AnsiString>);
   public
     procedure Initialize;
     function AmIStarted(AWhatIsStarted: string): Boolean;
     function GetActionForCommand(ACommand: string): ISoccerAction;
-    function GetOutput: System.Generics.Collections.TList<System.AnsiString>;
     function SupportsCommand(ACommand: string): Boolean;
+    property Output: TList<AnsiString> read GetOutput write SetOutput;
     procedure DeInitialize;
   end;
 
@@ -61,9 +63,8 @@ begin
     Result := TSoccerVoteAction.Create(FVotersPreferenceProfile);
   if ACommand = 'DECIDE!' then
   begin
-    FOutput := TList<AnsiString>.Create;
     Result := TSoccerDecideAction.Create(FVotersPreferenceProfile,
-      FRulePreferenceList, FOutput, GetDefaultRuleChooser);
+      FRulePreferenceList, Self, GetDefaultRuleChooser);
   end;
 end;
 
@@ -81,6 +82,11 @@ begin
     (GetPreferenceFilePath);
   FVotersPreferenceProfile := TSoccerVotingVotersPreferences.Create;
   FOutput := nil;
+end;
+
+procedure TSoccerVotingDomain.SetOutput(AValue: TList<AnsiString>);
+begin
+  FOutput := AValue;
 end;
 
 function TSoccerVotingDomain.SupportsCommand(ACommand: string): Boolean;
