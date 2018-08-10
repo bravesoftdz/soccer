@@ -104,6 +104,7 @@
         <DCCReference Include="..\core\src\Soccer.Voting.Preferences.pas"/>
         <DCCReference Include="..\core\src\Soccer.Voting.RuleChooser.pas"/>
         <DCCReference Include="..\core\src\Soccer.VotingRules.Plurality.pas"/>
+        <DCCReference Include="..\core\src\Soccer.VotingRules.Condorcet.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
