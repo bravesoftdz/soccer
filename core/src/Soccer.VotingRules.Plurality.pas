@@ -13,6 +13,7 @@ uses
 type
   TSoccerPluralityVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   private
+    FMoreThenTwoAlternativesAllowed: boolean;
     procedure CalculateScores(LCandidates
       : System.Generics.Collections.TList<AnsiString>;
       LScores: System.Generics.Collections.TList<Integer>;
@@ -22,6 +23,7 @@ type
       AScoresList: TList<Integer>; AMaxScore: Integer): TList<AnsiString>;
     function IsAppliable(AProfile: TSoccerVotingVotersPreferences): boolean;
   public
+    constructor Create(AMoreThenTwoAlternativesAllowed: boolean);
     function GetName: string;
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
       out Winners: TList<AnsiString>): boolean;
@@ -30,6 +32,12 @@ type
 implementation
 
 { TSoccerPluralityVotingRule }
+
+constructor TSoccerPluralityVotingRule.Create(AMoreThenTwoAlternativesAllowed
+  : boolean);
+begin
+  FMoreThenTwoAlternativesAllowed := AMoreThenTwoAlternativesAllowed;
+end;
 
 function TSoccerPluralityVotingRule.ExecuteOn
   (AProfile: TSoccerVotingVotersPreferences;
@@ -106,21 +114,27 @@ end;
 
 function TSoccerPluralityVotingRule.GetName: string;
 begin
-  Result := 'plurality';
+  if FMoreThenTwoAlternativesAllowed then
+    Result := 'plurality'
+  else
+    Result := 'plurality2';
 end;
 
 function TSoccerPluralityVotingRule.IsAppliable
   (AProfile: TSoccerVotingVotersPreferences): boolean;
 begin
-  Result := true;
+  Result := FMoreThenTwoAlternativesAllowed or
+    (AProfile.Properties.AlternativesCount <= 2);
 end;
 
 var
-  LRule: TSoccerPluralityVotingRule;
+  LRule: ISoccerVotingRule;
 
 initialization
 
-LRule := TSoccerPluralityVotingRule.Create;
+LRule := TSoccerPluralityVotingRule.Create(false);
+GlobalVotingRulesDict.Rules.Add(LRule.GetName, LRule);
+LRule := TSoccerPluralityVotingRule.Create(true);
 GlobalVotingRulesDict.Rules.Add(LRule.GetName, LRule);
 
 end.

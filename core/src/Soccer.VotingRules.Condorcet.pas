@@ -16,6 +16,7 @@ type
 
   TSoccerCondorcetRule = class(TInterfacedObject, ISoccerVotingRule)
   private
+    FEmptyOutputAllowed: boolean;
     function FindAlternatives(AProfile: TSoccerVotingVotersPreferences)
       : TStringList;
     function DownProfile(AAlt1, AAlt2: string;
@@ -25,15 +26,21 @@ type
     function FindWinners(APreferences: TCollectivePreferenceRelation;
       AAlternatives: TStringList): TList<AnsiString>;
   public
+    constructor Create(AEmptyOutputAllowed: boolean);
     function GetName: string;
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
       out Winners: System.Generics.Collections.
-      TList<System.AnsiString>): Boolean;
+      TList<System.AnsiString>): boolean;
   end;
 
 implementation
 
 { TSoccerCondorcetRule }
+
+constructor TSoccerCondorcetRule.Create(AEmptyOutputAllowed: boolean);
+begin
+  FEmptyOutputAllowed := AEmptyOutputAllowed;
+end;
 
 function TSoccerCondorcetRule.DownProfile(AAlt1, AAlt2: string;
   AProfile: TSoccerVotingVotersPreferences): TSoccerVotingVotersPreferences;
@@ -57,7 +64,7 @@ end;
 
 function TSoccerCondorcetRule.ExecuteOn
   (AProfile: TSoccerVotingVotersPreferences;
-  out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
+  out Winners: System.Generics.Collections.TList<System.AnsiString>): boolean;
 var
   LAlternatives: TStringList;
   LAlternative1, LAlternative2: string;
@@ -94,7 +101,10 @@ begin
     end;
   end;
   Winners := FindWinners(LDominations, LAlternatives);
-  Result := Winners.Count > 0;
+  if FEmptyOutputAllowed then
+    Result := true
+  else
+    Result := Winners.Count > 0;
 end;
 
 function TSoccerCondorcetRule.FindAlternatives
@@ -126,7 +136,7 @@ function TSoccerCondorcetRule.FindWinners(APreferences
   : TList<AnsiString>;
 var
   LAlternative1, LAlternative2: string;
-  LIsWinner: Boolean;
+  LIsWinner: boolean;
 begin
   Result := TList<AnsiString>.Create;
   for LAlternative1 in AAlternatives do
@@ -147,7 +157,10 @@ end;
 
 function TSoccerCondorcetRule.GetName: string;
 begin
-  Result := 'condorcet';
+  if FEmptyOutputAllowed then
+    Result := 'condorcet_empty'
+  else
+    Result := 'condorcet';
 end;
 
 function TSoccerCondorcetRule.IsFirstDominated(AFirstAlt, ASecondAlt: string;
@@ -171,11 +184,13 @@ begin
 end;
 
 var
-  LRule: TSoccerCondorcetRule;
+  LRule: ISoccerVotingRule;
 
 initialization
 
-LRule := TSoccerCondorcetRule.Create;
+LRule := TSoccerCondorcetRule.Create(true);
+GlobalVotingRulesDict.Rules.Add(LRule.GetName, LRule);
+LRule := TSoccerCondorcetRule.Create(false);
 GlobalVotingRulesDict.Rules.Add(LRule.GetName, LRule);
 
 end.
