@@ -14,9 +14,9 @@ uses
   LeakCheck,
   LeakCheck.Utils,
   System.SysUtils,
-{$IFDEF TESTINSIGHT}
+  {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
-{$ENDIF }
+  {$ENDIF }
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
@@ -26,25 +26,24 @@ uses
   Soccer.Parser in '..\core\src\Soccer.Parser.pas',
   Soccer.Domain.Abstract in '..\core\src\Soccer.Domain.Abstract.pas',
   Soccer.Domain.Factory in '..\core\src\Soccer.Domain.Factory.pas',
-  soccertests.DomainFactoryTests in 'SoccerTests.DomainFactoryTests.pas',
-  soccertests.SoccerParserTests in 'SoccerTests.SoccerParserTests.pas',
-  soccertests.MainTests in 'SoccerTests.MainTests.pas',
+  SoccerTests.DomainFactoryTests in 'SoccerTests.DomainFactoryTests.pas',
+  SoccerTests.SoccerParserTests in 'SoccerTests.SoccerParserTests.pas',
+  SoccerTests.MainTests in 'SoccerTests.MainTests.pas',
   Soccer.Voting.AbstractRule in '..\core\src\Soccer.Voting.AbstractRule.pas',
   Soccer.Voting.Actions in '..\core\src\Soccer.Voting.Actions.pas',
   Soccer.Voting.Domain in '..\core\src\Soccer.Voting.Domain.pas',
   Soccer.Voting.Preferences in '..\core\src\Soccer.Voting.Preferences.pas',
-  Soccer.Voting.RulePreferenceList
-    in '..\core\src\Soccer.Voting.RulePreferenceList.pas',
+  Soccer.Voting.RulePreferenceList in '..\core\src\Soccer.Voting.RulePreferenceList.pas',
   Soccer.Voting.RulesDict in '..\core\src\Soccer.Voting.RulesDict.pas',
-  soccertests.VotingRulesDictTests in 'SoccerTests.VotingRulesDictTests.pas',
-  soccertests.VotingRulePreferenceListTests
-    in 'SoccerTests.VotingRulePreferenceListTests.pas',
-  soccertests.VotingActionTests in 'SoccerTests.VotingActionTests.pas',
+  SoccerTests.VotingRulesDictTests in 'SoccerTests.VotingRulesDictTests.pas',
+  SoccerTests.VotingRulePreferenceListTests in 'SoccerTests.VotingRulePreferenceListTests.pas',
+  SoccerTests.VotingActionTests in 'SoccerTests.VotingActionTests.pas',
   Soccer.Voting.RuleChooser in '..\core\src\Soccer.Voting.RuleChooser.pas',
-  Soccer.VotingRules.Plurality
-    in '..\core\src\Soccer.VotingRules.Plurality.pas',
-  soccertests.RuleChooserTests in 'SoccerTests.RuleChooserTests.pas',
-  soccertests.PreferencesTests in 'SoccerTests.PreferencesTests.pas';
+  Soccer.VotingRules.Plurality in '..\core\src\Soccer.VotingRules.Plurality.pas',
+  SoccerTests.RuleChooserTests in 'SoccerTests.RuleChooserTests.pas',
+  SoccerTests.PreferencesTests in 'SoccerTests.PreferencesTests.pas',
+  Soccer.VotingRules.Condorcet in '..\core\src\Soccer.VotingRules.Condorcet.pas',
+  VotingCondorcetTests in 'VotingCondorcetTests.pas';
 
 var
   runner: ITestRunner;

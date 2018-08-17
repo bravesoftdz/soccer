@@ -101,6 +101,10 @@ begin
     end;
   end;
   Winners := FindWinners(LDominations, LAlternatives);
+
+  FreeAndNil(LDominations);
+  FreeAndNil(LAlternatives);
+
   if FEmptyOutputAllowed then
     Result := true
   else
