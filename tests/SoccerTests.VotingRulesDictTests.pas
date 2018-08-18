@@ -44,7 +44,7 @@ end;
 
 procedure TVotingRulesDictTest.GlobalDictTest;
 begin
-  Assert.IsTrue(GlobalVotingRulesDict.Rules.Count = 4);
+  Assert.IsTrue(GlobalVotingRulesDict.Rules.Count = 5);
 end;
 
 procedure TVotingRulesDictTest.VotingRulesDictTest;

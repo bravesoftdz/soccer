@@ -45,11 +45,12 @@ begin
   begin
     for i := LVoter.Count - 1 downto 0 do
     begin
-      LScores[LVoter[i]] := LScores[LVoter[i]] + (LVoter.Count - 1);
+      LScores[LVoter[i]] := LScores[LVoter[i]] + (LVoter.Count - i);
     end;
   end;
   Winners := FindWinners(LScores);
   Result := true;
+  FreeAndNil(LScores);
 end;
 
 function TSoccerBordaVotingScoreRule.FindWinners
@@ -58,7 +59,6 @@ var
   LAlternative: string;
   LMaxScore: integer;
 begin
-  Result := TList<AnsiString>.Create;
   LMaxScore := 0;
   for LAlternative in LScores.Keys do
   begin

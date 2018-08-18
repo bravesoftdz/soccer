@@ -43,7 +43,9 @@ uses
   SoccerTests.RuleChooserTests in 'SoccerTests.RuleChooserTests.pas',
   SoccerTests.PreferencesTests in 'SoccerTests.PreferencesTests.pas',
   Soccer.VotingRules.Condorcet in '..\core\src\Soccer.VotingRules.Condorcet.pas',
-  VotingCondorcetTests in 'VotingCondorcetTests.pas';
+  SoccerTests.VotingCondorcetTests in 'SoccerTests.VotingCondorcetTests.pas',
+  Soccer.VotingRules.Borda in '..\core\src\Soccer.VotingRules.Borda.pas',
+  SoccerTests.VotingBordaTests in 'SoccerTests.VotingBordaTests.pas';
 
 var
   runner: ITestRunner;

@@ -1,4 +1,4 @@
-unit VotingCondorcetTests;
+unit SoccerTests.VotingCondorcetTests;
 
 interface
 
