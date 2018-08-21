@@ -36,8 +36,9 @@ begin
     except
       on E: Exception do
       begin
-        SetLength(OutArray, 1);
-        OutArray[0] := PAnsiChar(AnsiString('error( ' + E.ClassName + ' ): ' + E.Message));
+        SetLength(OutArray, 2);
+        OutArray[0] := PAnsiChar(AnsiString('error'));
+        OutArray[1] := PAnsiChar(AnsiString(E.ClassName + ' : ' + E.Message));
       end;
     end;
   finally

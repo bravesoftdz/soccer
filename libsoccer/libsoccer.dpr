@@ -18,7 +18,8 @@ uses
   Soccer.Voting.RuleChooser in '..\core\src\Soccer.Voting.RuleChooser.pas',
   Soccer.VotingRules.Plurality in '..\core\src\Soccer.VotingRules.Plurality.pas',
   Soccer.VotingRules.Condorcet in '..\core\src\Soccer.VotingRules.Condorcet.pas',
-  Soccer.VotingRules.Borda in '..\core\src\Soccer.VotingRules.Borda.pas';
+  Soccer.VotingRules.Borda in '..\core\src\Soccer.VotingRules.Borda.pas',
+  Soccer.VotingRules.DLLRule in '..\core\src\Soccer.VotingRules.DLLRule.pas';
 
 {$R *.res}
 
