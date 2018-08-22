@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<test-results name="C:\Prog\soccer\tests\Win64\Debug\soccertests.exe" total="29" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2018-08-22" time="0.010">
+  <culture-info current-culture="en" current-uiculture="en" />
+  <test-suite type="Assembly" name="soccertests.exe" executed="true" result="Success" success="True" time="0.010" asserts="0">
+    <results>
+        <test-suite type="Namespace" name="SoccerTests" executed="true" result="Success" success="True" time="0.089" asserts="0" >
+          <results>
+              <test-suite type="Namespace" name="VotingActionTests" executed="true" result="Success" success="True" time="0.028" asserts="0" >
+                <results>
+                    <test-suite type="Fixture" name="TVoteActionTests" executed="True" result="Success" success="True" time="0.010" >
+                      <results>
+                        <test-case name="FullTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                      </results>
+                    </test-suite>
+                    <test-suite type="Fixture" name="TVotingImportActionTests" executed="True" result="Success" success="True" time="0.009" >
+                      <results>
+                        <test-case name="FullTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                        <test-case name="ImportNonExistingRule" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                      </results>
+                    </test-suite>
+                    <test-suite type="Fixture" name="TDecideActionTests" executed="True" result="Success" success="True" time="0.009" >
+                      <results>
+                        <test-case name="ComanndNotDecideTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                        <test-case name="WrongDomain" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                      </results>
+                    </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TVotingRulesDictTest" executed="True" result="Success" success="True" time="0.009" >
+                <results>
+                  <test-case name="VotingRulesDictTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="GlobalDictTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TSoccerDomainFactoryTests" executed="True" result="Success" success="True" time="0.008" >
+                <results>
+                  <test-case name="FactoryTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="GlobalFactoryTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TVotingCondorcetTests" executed="True" result="Success" success="True" time="0.008" >
+                <results>
+                  <test-case name="FullTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="CondorcetParadox" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="EqualAlternatives" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="IncompleteProfileTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="DisableEmpty" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TVotingRulePreferenceListTests" executed="True" result="Success" success="True" time="0.007" >
+                <results>
+                  <test-case name="InsertTwoRules" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="InsertTwoRules2" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TRuleChooserTests" executed="True" result="Success" success="True" time="0.007" >
+                <results>
+                  <test-case name="NoRuleImportedTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="NoRuleFoundTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TSoccerParserTests" executed="True" result="Success" success="True" time="0.006" >
+                <results>
+                  <test-case name="FullTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="FullTest2" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="NoDomainFoundTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="NoStartTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="UnknownCommandTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TSoccerDLLRuleTests" executed="True" result="Success" success="True" time="0.005" >
+                <results>
+                  <test-case name="FullTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TSoccerPreferencesTests" executed="True" result="Success" success="True" time="0.004" >
+                <results>
+                  <test-case name="CalculatePropertiesTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TBordaTests" executed="True" result="Success" success="True" time="0.004" >
+                <results>
+                  <test-case name="FullTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+              <test-suite type="Fixture" name="TMainTests" executed="True" result="Success" success="True" time="0.003" >
+                <results>
+                  <test-case name="FullTest" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="NoDecideCommand" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="IncompletePreferencesTest" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+          </results>
+        </test-suite>
+    </results>
+  </test-suite>
+</test-results>

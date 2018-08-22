@@ -18,10 +18,11 @@ uses
 
 type
 
-  TSoccerGetNameProc = function(): PAnsiChar;
+  TSoccerGetNameProc = function(): PAnsiChar; stdcall;
   TSoccerExecuteOnProc = function(AProfile: TArray<TArray<PAnsiChar>>;
     AProperties: TSoccerVotersPreferencesProperties;
-    var OutWinners: TArray<PAnsiChar>; var WinnersLength: integer): integer;
+    var OutWinners: TArray<PAnsiChar>; var WinnersLength: integer)
+    : integer; stdcall;
 
   TSoccerDLLVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   private
@@ -45,15 +46,20 @@ function GetDLLRulesPath: string;
 begin
   Result := '.\dllrules\';
 {$IFDEF DEBUG}
-  Result := '';
+  Result := '..\..\..\dllrules';
 {$ENDIF}
 end;
 
 constructor TSoccerDLLVotingRule.Create(ADLLPath: string);
+var
+  WCharPath: PWideChar;
+  Card: cardinal;
+  Msg: string;
 begin
   @FExecuteOn := nil;
   @FGetName := nil;
-  FHandle := LoadLibrary(PWideChar(ADLLPath));
+  WCharPath := PWideChar(ADLLPath);
+  FHandle := LoadLibrary(WCharPath);
   if FHandle <> 0 then
   begin
     @FExecuteOn := GetProcAddress(FHandle, 'executeOn');
@@ -67,6 +73,8 @@ begin
   end
   else
   begin
+    Card := GetLastError;
+    Msg := SysErrorMessage(Card);
     raise ESoccerParserException.Create('Library "' + ADLLPath + '" not found');
   end;
 end;
