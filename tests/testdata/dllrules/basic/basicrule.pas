@@ -1,3 +1,6 @@
+{
+ This is a DLL rule for tests. You need to compile it into Win32 DLL.
+}
 library basicrule;
 
 {$mode objfpc}

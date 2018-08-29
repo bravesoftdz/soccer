@@ -75,7 +75,7 @@ begin
   begin
     Card := GetLastError;
     Msg := SysErrorMessage(Card);
-    raise ESoccerParserException.Create('Library "' + ADLLPath + '" not found');
+    raise ESoccerParserException.Create(StringReplace(Msg,'%1',ADLLPath,[]));
   end;
 end;
 
