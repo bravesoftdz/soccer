@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils,
+  System.Classes,
   System.IOUtils,
   System.Generics.Collections,
 
@@ -75,7 +76,7 @@ begin
   begin
     Card := GetLastError;
     Msg := SysErrorMessage(Card);
-    raise ESoccerParserException.Create(StringReplace(Msg,'%1',ADLLPath,[]));
+    raise ESoccerParserException.Create(StringReplace(Msg, '%1', ADLLPath, []));
   end;
 end;
 
@@ -104,7 +105,7 @@ begin
     for j := 0 to LVoter.Count - 1 do
     begin
       LAlternative := AnsiString(LVoter[j]);
-      LArr[i][j] := PAnsiChar(LAlternative);
+      LArr[i][j] := PAnsiChar(Copy(LAlternative, Length(LAlternative)));
     end;
   end;
   Result := FExecuteOn(LArr, AProfile.Properties, LWinners, LWinnersLength) > 0;

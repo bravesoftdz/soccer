@@ -10,7 +10,7 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="basicrule"/>
+      <Title Value="noexecuteon"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -33,7 +33,7 @@
     </RunParams>
     <Units Count="1">
       <Unit0>
-        <Filename Value="basicrule.pas"/>
+        <Filename Value="noexecuteon.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
     </Units>
@@ -42,7 +42,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="basicrule"/>
+      <Filename Value="noexecuteon"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
