@@ -20,10 +20,9 @@ uses
 type
 
   TSoccerGetNameProc = function(): PAnsiChar; stdcall;
-  TSoccerExecuteOnProc = function(AProfile: TArray<TArray<PAnsiChar>>;
-    AProperties: TSoccerVotersPreferencesProperties;
-    var OutWinners: TArray<PAnsiChar>; var WinnersLength: integer)
-    : integer; stdcall;
+  TSoccerExecuteOnProc = function(AProfile: PAnsiChar;
+    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: PAnsiChar;
+    var WinnersLength: integer): integer; stdcall;
 
   TSoccerDLLVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   private
@@ -90,30 +89,32 @@ function TSoccerDLLVotingRule.ExecuteOn
   (AProfile: TSoccerVotingVotersPreferences;
   out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
 var
-  LArr: TArray<TArray<PAnsiChar>>;
+  LPStrProfile: PAnsiChar;
+  LStrProfile: AnsiString;
   LVoter: TSoccerVotingIndividualPreferenceProfile;
-  LWinners: TArray<PAnsiChar>;
+  LWinners: PAnsiChar;
   LWinner: PAnsiChar;
+  LWinnerStr: AnsiString;
   LAlternative: AnsiString;
   i, j, LWinnersLength: integer;
 begin
-  SetLength(LArr, AProfile.Properties.VotersCount);
+  LPStrProfile := '';
   for i := 0 to AProfile.Profile.Count - 1 do
   begin
     LVoter := AProfile.Profile[i];
-    SetLength(LArr[i], LVoter.Count);
     for j := 0 to LVoter.Count - 1 do
     begin
       LAlternative := AnsiString(LVoter[j]);
-      LArr[i][j] := PAnsiChar(Copy(LAlternative, Length(LAlternative)));
+      LStrProfile := LStrProfile + LAlternative + ',';
     end;
   end;
-  Result := FExecuteOn(LArr, AProfile.Properties, LWinners, LWinnersLength) > 0;
+  LPStrProfile := PAnsiChar(LStrProfile);
+  Result := FExecuteOn(LPStrProfile, AProfile.Properties, LWinners,
+    LWinnersLength) > 0;
   Winners := TList<AnsiString>.Create;
   for i := 0 to LWinnersLength - 1 do
   begin
-    LWinner := LWinners[i];
-    Winners.Add(AnsiString(LWinner));
+    Winners.Add(LWinners);
   end;
 end;
 

@@ -5,10 +5,10 @@ library basicrule;
 
 {$mode objfpc}
 
+uses
+    SysUtils;
+
 type
-  TVoter = array of PAnsiChar;
-  TProfile = array of TVoter;
-  TWinners = array of PAnsiChar;
 
   TSoccerVotersPreferencesProperties = record
     AlternativesCount: integer;
@@ -21,19 +21,12 @@ type
     Result := PAnsiChar('nowinnerrule');
   end;
 
-  function executeOn(AProfile: TProfile;
-    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: TWinners;
-  var WinnersLength: integer): integer; stdcall;
+  function executeOn(AProfile: PAnsiChar;
+    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: PAnsiChar;
+    var WinnersLength: integer): integer; stdcall;
   begin
-    if AProperties.VotersCount = 1 then
-    begin
-      Result := 1;
-      WinnersLength := 1;
-      SetLength(OutWinners, 1);
-      OutWinners[0] := AProfile[0][0];
-    end
-    else
-      Result := 0;
+    WinnersLength:= 1;
+    OutWinners:= 'a';
   end;
 
 exports
