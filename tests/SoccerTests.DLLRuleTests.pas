@@ -37,7 +37,6 @@ implementation
 procedure TSoccerDLLRuleTests.FullTest;
 var
   LRule: ISoccerVotingRule;
-  LPath: string;
   LProfile: TSoccerVotingVotersPreferences;
   LVoter: TSoccerVotingIndividualPreferenceProfile;
   LWinners: TList<AnsiString>;
@@ -53,11 +52,17 @@ begin
   LVoter.Add('c');
   LProfile.Profile.Add(LVoter);
 
-  Assert.IsTrue(LRule.ExecuteOn(LProfile,LWinners));
+  LVoter := TSoccerVotingIndividualPreferenceProfile.Create;
+  LVoter.Add('b');
+  LVoter.Add('a');
+  LVoter.Add('c');
+  LProfile.Profile.Add(LVoter);
+
+  Assert.IsTrue(LRule.ExecuteOn(LProfile, LWinners));
 
   Assert.IsTrue(Assigned(LWinners));
   Assert.IsTrue(LWinners.Count = 1);
-  Assert.IsTrue(LWinners[0] = 'a');
+  Assert.IsTrue(LWinners[0] = 'b');
 
   FreeAndNil(LProfile);
   FreeAndNil(LWinners);

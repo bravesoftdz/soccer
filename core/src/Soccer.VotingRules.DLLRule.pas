@@ -7,6 +7,8 @@ uses
   System.Classes,
   System.IOUtils,
   System.Generics.Collections,
+  System.Types,
+  System.StrUtils,
 
 {$IFDEF MSWINDOWS}
   Winapi.Windows,
@@ -18,6 +20,7 @@ uses
   Soccer.Voting.AbstractRule;
 
 type
+  PPPAnsiChar = ^PPAnsiChar;
 
   TSoccerGetNameProc = function(): PAnsiChar; stdcall;
   TSoccerExecuteOnProc = function(AProfile: PAnsiChar;
@@ -89,32 +92,38 @@ function TSoccerDLLVotingRule.ExecuteOn
   (AProfile: TSoccerVotingVotersPreferences;
   out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
 var
-  LPStrProfile: PAnsiChar;
-  LStrProfile: AnsiString;
+  LProfile: AnsiString;
+  LPProfile: PAnsiChar;
   LVoter: TSoccerVotingIndividualPreferenceProfile;
-  LWinners: PAnsiChar;
-  LWinner: PAnsiChar;
-  LWinnerStr: AnsiString;
+  LPWinners: PAnsiChar;
+  LWinner: AnsiString;
+  LWinners: AnsiString;
   LAlternative: AnsiString;
+  LPAlternative: PAnsiChar;
   i, j, LWinnersLength: integer;
 begin
-  LPStrProfile := '';
+  LProfile := '';
   for i := 0 to AProfile.Profile.Count - 1 do
   begin
     LVoter := AProfile.Profile[i];
     for j := 0 to LVoter.Count - 1 do
     begin
       LAlternative := AnsiString(LVoter[j]);
-      LStrProfile := LStrProfile + LAlternative + ',';
+      LProfile := LProfile + LAlternative;
+      if j <> LVoter.Count - 1 then
+        LProfile := LProfile + '-';
     end;
+    if i <> AProfile.Profile.Count - 1 then
+      LProfile := LProfile + '>';
   end;
-  LPStrProfile := PAnsiChar(LStrProfile);
-  Result := FExecuteOn(LPStrProfile, AProfile.Properties, LWinners,
+  LPProfile := PAnsiChar(LProfile);
+  Result := FExecuteOn(LPProfile, AProfile.Properties, LPWinners,
     LWinnersLength) > 0;
   Winners := TList<AnsiString>.Create;
-  for i := 0 to LWinnersLength - 1 do
+  LWinners := AnsiString(LPWinners);
+  for LWinner in SplitString(LWinners, '-') do
   begin
-    Winners.Add(LWinners);
+    Winners.Add(AnsiString(LWinner));
   end;
 end;
 

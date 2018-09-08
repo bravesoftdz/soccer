@@ -16,13 +16,12 @@ type
         Complete: boolean;
     end;
 
-function executeOn(AProfile: TProfile;
-    AProperties: TSoccerVotersPreferencesProperties;
-    var OutWinners: TWinners; var WinnersLength: integer): integer; stdcall;
+function executeOn(AProfile: PAnsiChar;
+    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: PAnsiChar;
+  var WinnersLength: integer): integer; stdcall;
 begin
   Result := 0;
   WinnersLength := 0;
-  SetLength(OutWinners, 0);
 end;
 
 exports 
