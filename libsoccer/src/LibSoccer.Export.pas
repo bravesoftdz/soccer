@@ -9,48 +9,44 @@ uses
 
   Soccer.Main;
 
-type
-
-  TOutArray = array [0 .. 20] of PAnsiChar;
-  POutArray = ^TOutArray;
-
-procedure ExecScript(AScript: PAnsiChar; var OutArray: POutArray;
+procedure ExecScript(AScript: PAnsiChar; var OutString: PAnsiChar;
   var OutLength: Int32); stdcall;
 
 implementation
 
-procedure ExecScript(AScript: PAnsiChar; var OutArray: POutArray;
+procedure ExecScript(AScript: PAnsiChar; var OutString: PAnsiChar;
   var OutLength: Int32);
 var
   LSoccer: TSoccer;
   LStrList: TList<AnsiString>;
   LStr: AnsiString;
   i: integer;
-  LBorder: integer;
+  LPChar: PAnsiChar;
+  LOutString: AnsiString;
 begin
   LSoccer := TSoccer.Create;
+  LOutString := '';
   try
     try
       LStrList := LSoccer.ExecScript(AScript);
-      OutLength := LStrList.Count;
-      if LStrList.Count - 1 > 20 then
-        LBorder := 20
-      else
-        LBorder := LStrList.Count;
       for i := 0 to LStrList.Count - 1 do
       begin
         LStr := LStrList[i];
-        OutArray[i] := PAnsiChar(LStr);
+        if i = 0 then
+          LOutString := LStr
+        else
+          LOutString := '<>' + LStr;
       end;
     except
       on E: Exception do
       begin
-        OutArray[0] := PAnsiChar(AnsiString('error'));
-        OutArray[1] := PAnsiChar(AnsiString(E.ClassName + ' : ' + E.Message));
+        LOutString := 'error<>' + E.ClassName + ': ' + E.Message;
       end;
     end;
   finally
     FreeAndNil(LSoccer);
+    OutString := PAnsiChar(LOutString);
+    OutLength := Length(OutString);
   end;
 end;
 

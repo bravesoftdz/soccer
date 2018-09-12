@@ -6,20 +6,17 @@ uses
   SysUtils,
   Classes;
 
-type
-  TOutArray = array [0 .. 20] of PAnsiChar;
-  POutArray = ^TOutArray;
-
-  procedure ExecScript(AScript: PAnsiChar; var OutArray: POutArray; var OutLength: Int32);
-  stdcall; external 'libsoccer.dll';
+  procedure ExecScript(AScript: PAnsiChar; var OutString: PAnsiChar;
+  var OutLength: Int32); stdcall;
+  external 'libsoccer.dll';
 
 var
   LFileName: string;
   LStringList: TStringList;
   LScript: PAnsiChar;
-  LOutArray: POutArray;
+  LOutStr: PAnsiChar;
   LOutLength: Int32;
-  i: integer;
+  LTest: ansistring;
 
 begin
   if ParamCount > 0 then
@@ -33,10 +30,10 @@ begin
   try
     try
       LStringList.LoadFromFile(LFileName);
-      LScript := PAnsiChar(LStringList.Text);
-      ExecScript(LScript, LOutArray, LOutLength);
-      for i := 0 to LOutLength - 1 do
-        Writeln(LOutArray^[0] + ',');
+      LTest := ansistring(LStringList.Text);
+      LScript := PAnsiChar(LTest);
+      ExecScript(LScript, LOutStr, LOutLength);
+      WriteLn(LOutStr);
     except
       on E: Exception do
         Writeln(E.Message);
