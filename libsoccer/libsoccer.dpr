@@ -24,7 +24,8 @@ uses
 {$R *.res}
 
 exports
-  LibSoccer.Export.ExecScript;
+  LibSoccer.Export.ExecScript,
+  LibSoccer.Export.FreeSoccerString;
 
 begin
 

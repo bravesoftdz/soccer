@@ -1,7 +1,0 @@
-START[voting]
-IMPORT[plurality]
-VOTE(a->b->c)
-VOTE(c->b->a)
-VOTE(b->a->c)
-VOTE(a->b->c)
-DECIDE!

@@ -9,13 +9,15 @@ uses
 
   Soccer.Main;
 
-procedure ExecScript(AScript: PAnsiChar; var OutString: PAnsiChar;
-  var OutLength: Int32); stdcall;
+function ExecScript(AScript: PAnsiChar; var OutLength: Int32)
+  : PAnsiChar; stdcall;
+
+procedure FreeSoccerString(var AStr: PAnsiChar); stdcall;
 
 implementation
 
-procedure ExecScript(AScript: PAnsiChar; var OutString: PAnsiChar;
-  var OutLength: Int32);
+function ExecScript(AScript: PAnsiChar; var OutLength: Int32)
+  : PAnsiChar; stdcall;
 var
   LSoccer: TSoccer;
   LStrList: TList<AnsiString>;
@@ -35,7 +37,7 @@ begin
         if i = 0 then
           LOutString := LStr
         else
-          LOutString := '<>' + LStr;
+          LOutString := LOutString + '<>' + LStr;
       end;
     except
       on E: Exception do
@@ -45,9 +47,14 @@ begin
     end;
   finally
     FreeAndNil(LSoccer);
-    OutString := PAnsiChar(LOutString);
-    OutLength := Length(OutString);
+    Result := PAnsiChar(LOutString);
+    OutLength := Length(Result);
   end;
+end;
+
+procedure FreeSoccerString(var AStr: PAnsiChar);
+begin
+  AStr := nil;
 end;
 
 end.

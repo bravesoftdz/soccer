@@ -6,9 +6,18 @@ uses
   SysUtils,
   Classes;
 
-  procedure ExecScript(AScript: PAnsiChar; var OutString: PAnsiChar;
-  var OutLength: Int32); stdcall;
-  external 'libsoccer.dll';
+  function ExecScript(AScript: PAnsiChar; var OutLength: Int32): PAnsiChar;
+  stdcall; external 'libsoccer.dll';
+
+  procedure FreeSoccerString(var AStr: PAnsiChar); stdcall; external 'libsoccer.dll';
+
+  function ParseSoccerOutputToArray(ASoccerOut: PAnsiChar): TStringArray;
+  var
+    LStr: ansistring;
+  begin
+    LStr := ansistring(ASoccerOut);
+    Result := LStr.Split(['<>']);
+  end;
 
 var
   LFileName: string;
@@ -17,6 +26,8 @@ var
   LOutStr: PAnsiChar;
   LOutLength: Int32;
   LTest: ansistring;
+  LOutArr: TStringArray;
+  i: integer;
 
 begin
   if ParamCount > 0 then
@@ -32,14 +43,24 @@ begin
       LStringList.LoadFromFile(LFileName);
       LTest := ansistring(LStringList.Text);
       LScript := PAnsiChar(LTest);
-      ExecScript(LScript, LOutStr, LOutLength);
-      WriteLn(LOutStr);
+      LOutStr := ExecScript(LScript, LOutLength);
+      LOutArr := ParseSoccerOutputToArray(LOutStr);
+      if LOutArr[0] = 'error' then
+        Writeln(LOutArr[0] + ': ' + LOutArr[1])
+      else
+      begin
+        Writeln('Selected with ' + LOutArr[0]);
+        Write('Winners: ');
+        for i := 1 to Length(LOutArr) do
+          Write(LOutArr[i] + ' ');
+        Writeln();
+      end;
     except
       on E: Exception do
         Writeln(E.Message);
     end;
   finally
     FreeAndNil(LStringList);
+    FreeSoccerString(LOutStr);
   end;
-  ReadLn();
 end.
