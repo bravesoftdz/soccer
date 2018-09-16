@@ -16,7 +16,16 @@ uses
     LStr: ansistring;
   begin
     LStr := ansistring(ASoccerOut);
-    Result := LStr.Split(['<>']);
+    while Pos('<>', LStr) <> 0 do
+    begin
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := LStr.Substring(0, Pos('<>', LStr) + 1);
+      LStr := LStr.Substring(Pos('<>', LStr) + 1);
+      Result[Length(Result) - 1] :=
+        Result[Length(Result) - 1].Substring(0, Length(Result[Length(Result) - 1]) - 2);
+    end;
+    SetLength(Result, Length(Result) + 1);
+    Result[Length(Result) - 1] := LStr;
   end;
 
 var
@@ -51,7 +60,7 @@ begin
       begin
         Writeln('Selected with ' + LOutArr[0]);
         Write('Winners: ');
-        for i := 1 to Length(LOutArr) do
+        for i := 1 to Length(LOutArr)-1 do
           Write(LOutArr[i] + ' ');
         Writeln();
       end;
