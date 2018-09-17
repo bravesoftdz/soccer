@@ -1,17 +1,17 @@
 program soccer;
 
-{$mode objfpc}
+{$mode delphi}
 
 uses
   SysUtils,
   Classes;
 
-  function ExecScript(AScript: PAnsiChar; var OutLength: Int32): PAnsiChar;
+  function ExecScript(AScript: PWideChar; var OutLength: Int32): PWideChar;
   stdcall; external 'libsoccer.dll';
 
-  procedure FreeSoccerString(var AStr: PAnsiChar); stdcall; external 'libsoccer.dll';
+  procedure FreeSoccerString(var AStr: PWideChar); stdcall; external 'libsoccer.dll';
 
-  function ParseSoccerOutputToArray(ASoccerOut: PAnsiChar): TStringArray;
+  function ParseSoccerOutputToArray(ASoccerOut: PWideChar): TStringArray;
   var
     LStr: ansistring;
   begin
@@ -31,10 +31,10 @@ uses
 var
   LFileName: string;
   LStringList: TStringList;
-  LScript: PAnsiChar;
-  LOutStr: PAnsiChar;
+  LScript: PWideChar;
+  LOutStr: PWideChar;
   LOutLength: Int32;
-  LTest: ansistring;
+  LTest: UnicodeString;
   LOutArr: TStringArray;
   i: integer;
 
@@ -50,8 +50,8 @@ begin
   try
     try
       LStringList.LoadFromFile(LFileName);
-      LTest := ansistring(LStringList.Text);
-      LScript := PAnsiChar(LTest);
+      LTest := UnicodeString(Copy(LStringList.Text, 1, Length(LStringList.Text)));
+      LScript := PWideChar(LTest);
       LOutStr := ExecScript(LScript, LOutLength);
       LOutArr := ParseSoccerOutputToArray(LOutStr);
       if LOutArr[0] = 'error' then
@@ -60,7 +60,7 @@ begin
       begin
         Writeln('Selected with ' + LOutArr[0]);
         Write('Winners: ');
-        for i := 1 to Length(LOutArr)-1 do
+        for i := 1 to Length(LOutArr) - 1 do
           Write(LOutArr[i] + ' ');
         Writeln();
       end;

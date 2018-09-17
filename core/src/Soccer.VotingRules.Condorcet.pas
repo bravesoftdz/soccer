@@ -24,13 +24,13 @@ type
     function IsFirstDominated(AFirstAlt, ASecondAlt: string;
       ADownProfile: TSoccerVotingVotersPreferences): integer;
     function FindWinners(APreferences: TCollectivePreferenceRelation;
-      AAlternatives: TStringList): TList<AnsiString>;
+      AAlternatives: TStringList): TList<string>;
   public
     constructor Create(AEmptyOutputAllowed: boolean);
     function GetName: string;
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
       out Winners: System.Generics.Collections.
-      TList<System.AnsiString>): boolean;
+      TList<System.string>): boolean;
   end;
 
 implementation
@@ -64,7 +64,7 @@ end;
 
 function TSoccerCondorcetRule.ExecuteOn
   (AProfile: TSoccerVotingVotersPreferences;
-  out Winners: System.Generics.Collections.TList<System.AnsiString>): boolean;
+  out Winners: System.Generics.Collections.TList<System.string>): boolean;
 var
   LAlternatives: TStringList;
   LAlternative1, LAlternative2: string;
@@ -137,12 +137,12 @@ end;
 
 function TSoccerCondorcetRule.FindWinners(APreferences
   : TCollectivePreferenceRelation; AAlternatives: TStringList)
-  : TList<AnsiString>;
+  : TList<string>;
 var
   LAlternative1, LAlternative2: string;
   LIsWinner: boolean;
 begin
-  Result := TList<AnsiString>.Create;
+  Result := TList<string>.Create;
   for LAlternative1 in AAlternatives do
   begin
     LIsWinner := true;
@@ -155,7 +155,7 @@ begin
         LIsWinner := false;
     end;
     if LIsWinner then
-      Result.Add(AnsiString(LAlternative1));
+      Result.Add(LAlternative1);
   end;
 end;
 

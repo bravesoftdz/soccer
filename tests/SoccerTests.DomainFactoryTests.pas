@@ -18,7 +18,7 @@ type
     function AmIStarted(AStartCommand: string): Boolean;
     function GetActionForCommand(ACommand: string): ISoccerAction;
     function GetOutput: System.Generics.Collections.
-      TList<System.AnsiString>;
+      TList<string>;
     function SupportsCommand(ACommand: string): Boolean;
     procedure DeInitialize;
     procedure Initialize;
@@ -77,8 +77,7 @@ begin
   Result := nil;
 end;
 
-function TFakeDomain.GetOutput: System.Generics.Collections.
-  TList<System.AnsiString>;
+function TFakeDomain.GetOutput: System.Generics.Collections.TList<string>;
 begin
   Result := nil;
 end;

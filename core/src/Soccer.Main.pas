@@ -16,7 +16,7 @@ type
     FParser: TSoccerParser;
   public
     constructor Create;
-    function ExecScript(AScript: AnsiString): TList<AnsiString>;
+    function ExecScript(AScript: string): TList<string>;
     destructor Destroy; override;
   end;
 
@@ -35,7 +35,7 @@ begin
   inherited;
 end;
 
-function TSoccer.ExecScript(AScript: AnsiString): TList<AnsiString>;
+function TSoccer.ExecScript(AScript: string): TList<string>;
 begin
   Result := FParser.ParseExecuteScript(string(AScript));
 end;

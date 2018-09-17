@@ -30,7 +30,7 @@ var
   LRule: ISoccerVotingRule;
   LProfile: TSoccerVotingVotersPreferences;
   LVoter: TSoccerVotingIndividualPreferenceProfile;
-  LWinners: TList<AnsiString>;
+  LWinners: TList<string>;
 begin
   LRule := TSoccerBordaVotingScoreRule.Create;
   LProfile := TSoccerVotingVotersPreferences.Create;

@@ -22,7 +22,7 @@ type
     function IsCommandEmpty(ACommand: string): boolean;
   public
     constructor Create(ADomainFactory: TSoccerDomainFactory);
-    function ParseExecuteScript(AScript: string): TList<AnsiString>;
+    function ParseExecuteScript(AScript: string): TList<string>;
     destructor Destroy; override;
   end;
 
@@ -91,7 +91,7 @@ begin
   Result := Trim(AChar) = '';
 end;
 
-function TSoccerParser.ParseExecuteScript(AScript: string): TList<AnsiString>;
+function TSoccerParser.ParseExecuteScript(AScript: string): TList<string>;
 var
   ch: char;
   LCommand: string;

@@ -36,7 +36,7 @@ type
     function GetName: string;
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
       out Winners: System.Generics.Collections.
-      TList<System.AnsiString>): Boolean;
+      TList<string>): Boolean;
   end;
 
   [TestFixture]
@@ -59,7 +59,7 @@ type
     function AmIStarted(AWhatIsStarted: string): Boolean;
     procedure DeInitialize;
     function GetActionForCommand(ACommand: string): ISoccerAction;
-    function GetOutput: System.Generics.Collections.TList<System.AnsiString>;
+    function GetOutput: System.Generics.Collections.TList<string>;
     procedure Initialize;
     function SupportsCommand(ACommand: string): Boolean;
   end;
@@ -109,7 +109,8 @@ end;
 { TFakeVotingRule }
 
 function TFakeVotingRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
-out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
+      out Winners: System.Generics.Collections.
+      TList<string>): Boolean;
 begin
   Result := false;
 end;
@@ -143,7 +144,6 @@ var
   LAction: TSoccerDecideAction;
   LProfile: TSoccerVotingVotersPreferences;
   LList: TSoccerVotingRulePreferenceList;
-  LResult: TList<AnsiString>;
   LRuleChooser: ISoccerVotingRuleChooser;
   LDomain: TSoccerVotingDomain;
 begin
@@ -158,7 +158,6 @@ begin
     begin
       LAction.WorkOnCommand('NOTDECIDE!');
     end, ESoccerParserException, 'Command is not "DECIDE!"');
-  LDomain := nil;
   FreeAndNil(LProfile);
   FreeAndNil(LAction);
   FreeAndNil(LList);
@@ -196,8 +195,7 @@ begin
   Result := nil;
 end;
 
-function TFakeDomain.GetOutput: System.Generics.Collections.
-  TList<System.AnsiString>;
+function TFakeDomain.GetOutput: System.Generics.Collections.TList<string>;
 begin
   Result := nil;
 end;

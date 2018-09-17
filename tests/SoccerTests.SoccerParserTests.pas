@@ -17,13 +17,13 @@ type
 
   TTestDomain = class(TInterfacedObject, ISoccerDomain)
   private
-    FOutput: TList<System.AnsiString>;
+    FOutput: TList<string>;
   public
     constructor Create;
     procedure AddToInput(ALine: string);
     function AmIStarted(AWhatIsStarted: string): Boolean;
     function GetActionForCommand(ACommand: string): ISoccerAction;
-    function GetOutput: System.Generics.Collections.TList<System.AnsiString>;
+    function GetOutput: System.Generics.Collections.TList<string>;
     function SupportsCommand(ACommand: string): Boolean;
     destructor Destroy; override;
     procedure DeInitialize;
@@ -63,7 +63,7 @@ var
   LParser: TSoccerParser;
   LFactory: TSoccerDomainFactory;
   LDomain: TTestDomain;
-  LOutput: TList<AnsiString>;
+  LOutput: TList<string>;
 begin
   LFactory := TSoccerDomainFactory.Create;
   LDomain := TTestDomain.Create;
@@ -82,7 +82,7 @@ var
   LParser: TSoccerParser;
   LFactory: TSoccerDomainFactory;
   LDomain: TTestDomain;
-  LOutput: TList<AnsiString>;
+  LOutput: TList<string>;
 begin
   LFactory := TSoccerDomainFactory.Create;
   LDomain := TTestDomain.Create;
@@ -159,7 +159,7 @@ end;
 
 constructor TTestDomain.Create;
 begin
-  FOutput := TList<AnsiString>.Create;
+  FOutput := TList<string>.Create;
 end;
 
 procedure TTestDomain.DeInitialize;
@@ -180,10 +180,10 @@ begin
 end;
 
 function TTestDomain.GetOutput: System.Generics.Collections.
-  TList<System.AnsiString>;
+  TList<System.string>;
 begin
   Result := FOutput;
-  FOutput := TList<AnsiString>.Create;
+  FOutput := TList<string>.Create;
 end;
 
 procedure TTestDomain.Initialize;

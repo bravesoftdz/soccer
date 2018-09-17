@@ -14,11 +14,11 @@ type
   TSoccerBordaVotingScoreRule = class(TInterfacedObject, ISoccerVotingRule)
   private
     function FindWinners(LScores: TDictionary<string, integer>)
-      : TList<AnsiString>;
+      : TList<string>;
   public
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
       out Winners: System.Generics.Collections.
-      TList<System.AnsiString>): Boolean;
+      TList<string>): Boolean;
     function GetName: string;
   end;
 
@@ -28,7 +28,7 @@ implementation
 
 function TSoccerBordaVotingScoreRule.ExecuteOn
   (AProfile: TSoccerVotingVotersPreferences;
-  out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
+  out Winners: System.Generics.Collections.TList<string>): Boolean;
 var
   LScores: TDictionary<string, integer>;
   LVoter: TSoccerVotingIndividualPreferenceProfile;
@@ -54,7 +54,7 @@ begin
 end;
 
 function TSoccerBordaVotingScoreRule.FindWinners
-  (LScores: TDictionary<string, integer>): TList<AnsiString>;
+  (LScores: TDictionary<string, integer>): TList<String>;
 var
   LAlternative: string;
   LMaxScore: integer;
@@ -65,11 +65,11 @@ begin
     if LScores[LAlternative] > LMaxScore then
       LMaxScore := LScores[LAlternative];
   end;
-  Result := TList<AnsiString>.Create;
+  Result := TList<String>.Create;
   for LAlternative in LScores.Keys do
   begin
     if LScores[LAlternative] = LMaxScore then
-      Result.Add(AnsiString(LAlternative));
+      Result.Add(LAlternative);
   end;
 end;
 

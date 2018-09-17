@@ -42,7 +42,6 @@ procedure TSoccerVotingVotersPreferences.CalculateProperties;
 var
   LVoter: TSoccerVotingIndividualPreferenceProfile;
   LAlternatives: TStringList;
-  LAlternativesCopy: TStringList;
   LAlternative: string;
 begin
   LAlternatives := TStringList.Create;

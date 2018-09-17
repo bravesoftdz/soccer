@@ -15,18 +15,18 @@ type
   private
     FMoreThenTwoAlternativesAllowed: boolean;
     procedure CalculateScores(LCandidates
-      : System.Generics.Collections.TList<AnsiString>;
+      : System.Generics.Collections.TList<string>;
       LScores: System.Generics.Collections.TList<Integer>;
       AProfile: TSoccerVotingVotersPreferences);
     function FindMaximalScore(AScoresList: TList<Integer>): Integer;
-    function FindBestCandidates(ACandidatesList: TList<AnsiString>;
-      AScoresList: TList<Integer>; AMaxScore: Integer): TList<AnsiString>;
+    function FindBestCandidates(ACandidatesList: TList<string>;
+      AScoresList: TList<Integer>; AMaxScore: Integer): TList<string>;
     function IsAppliable(AProfile: TSoccerVotingVotersPreferences): boolean;
   public
     constructor Create(AMoreThenTwoAlternativesAllowed: boolean);
     function GetName: string;
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
-      out Winners: TList<AnsiString>): boolean;
+      out Winners: TList<string>): boolean;
   end;
 
 implementation
@@ -41,16 +41,16 @@ end;
 
 function TSoccerPluralityVotingRule.ExecuteOn
   (AProfile: TSoccerVotingVotersPreferences;
-  out Winners: TList<AnsiString>): boolean;
+      out Winners: TList<string>): boolean;
 var
-  LCandidates: TList<AnsiString>;
+  LCandidates: TList<string>;
   LScores: TList<Integer>;
   LMax: Integer;
 begin
   Result := IsAppliable(AProfile);
   if not Result then
     exit;
-  LCandidates := TList<AnsiString>.Create;
+  LCandidates := TList<string>.Create;
   LScores := TList<Integer>.Create;
   CalculateScores(LCandidates, LScores, AProfile);
   LMax := FindMaximalScore(LScores);
@@ -59,13 +59,12 @@ begin
   FreeAndNil(LScores);
 end;
 
-function TSoccerPluralityVotingRule.FindBestCandidates(ACandidatesList
-  : TList<AnsiString>; AScoresList: TList<Integer>; AMaxScore: Integer)
-  : TList<AnsiString>;
+function TSoccerPluralityVotingRule.FindBestCandidates(ACandidatesList: TList<string>;
+      AScoresList: TList<Integer>; AMaxScore: Integer): TList<string>;
 var
   i: Integer;
 begin
-  Result := TList<AnsiString>.Create;
+  Result := TList<string>.Create;
   for i := 0 to ACandidatesList.Count - 1 do
   begin
     if AScoresList[i] = AMaxScore then
@@ -87,18 +86,19 @@ begin
 end;
 
 procedure TSoccerPluralityVotingRule.CalculateScores
-  (LCandidates: System.Generics.Collections.TList<AnsiString>;
-  LScores: System.Generics.Collections.TList<Integer>;
-  AProfile: TSoccerVotingVotersPreferences);
+  (LCandidates
+      : System.Generics.Collections.TList<string>;
+      LScores: System.Generics.Collections.TList<Integer>;
+      AProfile: TSoccerVotingVotersPreferences);
 var
   LVoter: TSoccerVotingIndividualPreferenceProfile;
-  LFirstAlternative: AnsiString;
+  LFirstAlternative: string;
   LIndex: Integer;
 begin
   { Calculate scores }
   for LVoter in AProfile.Profile do
   begin
-    LFirstAlternative := AnsiString(LVoter[0]);
+    LFirstAlternative := LVoter[0];
     if not LCandidates.Contains(LFirstAlternative) then
     begin
       LCandidates.Add(LFirstAlternative);

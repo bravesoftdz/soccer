@@ -3,13 +3,13 @@
 }
 library basicrule;
 
-{$mode objfpc}
+{$mode delphi}
 
 uses
   SysUtils;
 
 type
-  TProfile = array of array of ansistring;
+  TProfile = array of array of string;
 
   TSoccerVotersPreferencesProperties = record
     AlternativesCount: integer;
@@ -17,43 +17,42 @@ type
     Complete: boolean;
   end;
 
-  function getName: PAnsiChar; stdcall;
+  function getName: PWideChar; stdcall;
   begin
-    Result := PAnsiChar('nowinnerrule');
+    Result := PWideChar('nowinnerrule');
   end;
 
-  function ConvertProfile(AProfile: PAnsiChar): TProfile;
+  function ConvertProfile(AProfile: PWideChar): TProfile;
   var
-    LStrProfile: ansistring;
+    LStrProfile: string;
     LVoters: TStringArray;
     LVoter: TStringArray;
     i, j: integer;
   begin
-    LStrProfile := ansistring(AProfile);
+    LStrProfile := string(AProfile);
     LVoters := LStrProfile.Split(['>']);
     SetLength(Result, Length(LVoters));
-    for i := 0 to Length(LVoters)-1 do
+    for i := 0 to Length(LVoters) - 1 do
     begin
       LVoter := LVoters[i].Split(['-']);
       SetLength(Result[i], Length(LVoter));
-      for j := 0 to Length(LVoter)-1 do
+      for j := 0 to Length(LVoter) - 1 do
         Result[i][j] := LVoter[j];
     end;
   end;
 
-  function executeOn(AProfile: PAnsiChar;
-    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: PAnsiChar;
-  var WinnersLength: integer): integer; stdcall;
+  function executeOn(AProfile: PWideChar; AProperties: TSoccerVotersPreferencesProperties;
+  var OutWinners: PWideChar; var WinnersLength: integer): integer; stdcall;
   var
     LProfile: TProfile;
-    LWinner: ansistring;
+    LWinner: string;
   begin
     if AProperties.VotersCount = 2 then
     begin
       LProfile := ConvertProfile(AProfile);
       WinnersLength := 1;
       LWinner := LProfile[1][0];
-      OutWinners := PAnsiChar(LWinner);
+      OutWinners := PWideChar(LWinner);
     end
     else
       Result := 0;

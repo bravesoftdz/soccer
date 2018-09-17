@@ -23,15 +23,15 @@ type
   private
     FRulePreferenceList: TSoccerVotingRulePreferenceList;
     FVotersPreferenceProfile: TSoccerVotingVotersPreferences;
-    FOutput: TList<AnsiString>;
-    function GetOutput: System.Generics.Collections.TList<System.AnsiString>;
-    procedure SetOutput(AValue: TList<AnsiString>);
+    FOutput: TList<string>;
+    function GetOutput: System.Generics.Collections.TList<string>;
+    procedure SetOutput(AValue: TList<string>);
   public
     procedure Initialize;
     function AmIStarted(AWhatIsStarted: string): Boolean;
     function GetActionForCommand(ACommand: string): ISoccerAction;
     function SupportsCommand(ACommand: string): Boolean;
-    property Output: TList<AnsiString> read GetOutput write SetOutput;
+    property Output: TList<string> read GetOutput write SetOutput;
     procedure DeInitialize;
   end;
 
@@ -69,7 +69,7 @@ begin
 end;
 
 function TSoccerVotingDomain.GetOutput
-  : System.Generics.Collections.TList<System.AnsiString>;
+  : System.Generics.Collections.TList<string>;
 begin
   if not Assigned(FOutput) then
     raise ESoccerParserException.Create('No "DECIDE!" command found');
@@ -84,7 +84,7 @@ begin
   FOutput := nil;
 end;
 
-procedure TSoccerVotingDomain.SetOutput(AValue: TList<AnsiString>);
+procedure TSoccerVotingDomain.SetOutput(AValue: TList<string>);
 begin
   FOutput := AValue;
 end;

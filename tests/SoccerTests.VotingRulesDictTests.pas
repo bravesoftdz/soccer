@@ -30,7 +30,7 @@ type
   public
     function GetName: string;
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
-      out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
+      out Winners: System.Generics.Collections.TList<string>): Boolean;
   end;
 
 implementation
@@ -62,7 +62,7 @@ end;
 { TFakeVotingRule }
 
 function TFakeVotingRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
-      out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
+      out Winners: System.Generics.Collections.TList<string>): Boolean;
 begin
   Result := false;
 end;

@@ -38,7 +38,7 @@ var
   LCondorcet: ISoccerVotingRule;
   LProfile: TSoccerVotingVotersPreferences;
   LList: TList<string>;
-  LWinners: TList<AnsiString>;
+  LWinners: TList<string>;
 begin
   LCondorcet := TSoccerCondorcetRule.Create(true);
   LProfile := TSoccerVotingVotersPreferences.Create;
@@ -73,8 +73,7 @@ procedure TVotingCondorcetTests.DisableEmpty;
 var
   LCondorcet: ISoccerVotingRule;
   LProfile: TSoccerVotingVotersPreferences;
-  LList: TList<string>;
-  LWinners: TList<AnsiString>;
+  LWinners: TList<string>;
 begin
   LCondorcet := TSoccerCondorcetRule.Create(false);
   LProfile := TSoccerVotingVotersPreferences.Create;
@@ -91,7 +90,7 @@ var
   LCondorcet: ISoccerVotingRule;
   LProfile: TSoccerVotingVotersPreferences;
   LList: TList<string>;
-  LWinners: TList<AnsiString>;
+  LWinners: TList<string>;
 begin
   LCondorcet := TSoccerCondorcetRule.Create(true);
   LProfile := TSoccerVotingVotersPreferences.Create;
@@ -121,7 +120,7 @@ var
   LCondorcet: ISoccerVotingRule;
   LProfile: TSoccerVotingVotersPreferences;
   LList: TList<string>;
-  LWinners: TList<AnsiString>;
+  LWinners: TList<string>;
 begin
   LCondorcet := TSoccerCondorcetRule.Create(true);
   LProfile := TSoccerVotingVotersPreferences.Create;
@@ -158,7 +157,7 @@ var
   LCondorcet: ISoccerVotingRule;
   LProfile: TSoccerVotingVotersPreferences;
   LList: TList<string>;
-  LWinners: TList<AnsiString>;
+  LWinners: TList<string>;
 begin
   LCondorcet := TSoccerCondorcetRule.Create(true);
   LProfile := TSoccerVotingVotersPreferences.Create;

@@ -26,6 +26,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+        <HostApplicationFilename Value="D:\Prog\soccer\tests\Win32\Debug\soccertests.exe"/>
       </local>
     </RunParams>
     <Units Count="1">

@@ -47,7 +47,8 @@ uses
   Soccer.VotingRules.Borda in '..\core\src\Soccer.VotingRules.Borda.pas',
   SoccerTests.VotingBordaTests in 'SoccerTests.VotingBordaTests.pas',
   Soccer.VotingRules.DLLRule in '..\core\src\Soccer.VotingRules.DLLRule.pas',
-  SoccerTests.DLLRuleTests in 'SoccerTests.DLLRuleTests.pas';
+  SoccerTests.DLLRuleTests in 'SoccerTests.DLLRuleTests.pas',
+  Soccer.Voting.DLLRulesInitializer in '..\core\src\Soccer.Voting.DLLRulesInitializer.pas';
 
 var
   runner: ITestRunner;

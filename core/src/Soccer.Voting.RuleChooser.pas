@@ -15,14 +15,14 @@ uses
 type
   ISoccerVotingRuleChooser = interface
     function ChooseRuleFindWinners(AProfile: TSoccerVotingVotersPreferences;
-      out ARules: TSoccerVotingRulePreferenceList): TList<AnsiString>;
+      out ARules: TSoccerVotingRulePreferenceList): TList<string>;
   end;
 
   TSoccerRuleChooser = class(TInterfacedObject, ISoccerVotingRuleChooser)
   public
     function ChooseRuleFindWinners(AProfile: TSoccerVotingVotersPreferences;
       out ARules: TSoccerVotingRulePreferenceList)
-      : System.Generics.Collections.TList<System.AnsiString>;
+      : System.Generics.Collections.TList<string>;
   end;
 
 function GetDefaultRuleChooser: ISoccerVotingRuleChooser;
@@ -39,13 +39,14 @@ end;
 function TSoccerRuleChooser.ChooseRuleFindWinners
   (AProfile: TSoccerVotingVotersPreferences;
   out ARules: TSoccerVotingRulePreferenceList)
-  : System.Generics.Collections.TList<System.AnsiString>;
+  : System.Generics.Collections.TList<System.string>;
 var
   i: integer;
   LRule: ISoccerVotingRule;
-  LResult: TList<AnsiString>;
+  LResult: TList<string>;
   LRuleFound: Boolean;
 begin
+  LRuleFound := false;
   LResult := nil;
   if not AProfile.Properties.Complete then
     raise ESoccerParserException.Create
@@ -65,7 +66,7 @@ begin
   end;
   if not LRuleFound then
     raise ESoccerParserException.Create('No rule was found for your purposes');
-  Result := TList<AnsiString>.Create;
+  Result := TList<string>.Create;
   Result.Add(LRule.GetName);
   Result.AddRange(LResult.ToArray);
   FreeAndNil(LResult);

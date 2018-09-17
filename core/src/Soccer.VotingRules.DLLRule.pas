@@ -20,11 +20,9 @@ uses
   Soccer.Voting.AbstractRule;
 
 type
-  PPPAnsiChar = ^PPAnsiChar;
-
-  TSoccerGetNameProc = function(): PAnsiChar; stdcall;
-  TSoccerExecuteOnProc = function(AProfile: PAnsiChar;
-    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: PAnsiChar;
+  TSoccerGetNameProc = function(): PChar; stdcall;
+  TSoccerExecuteOnProc = function(AProfile: PChar;
+    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: PChar;
     var WinnersLength: integer): integer; stdcall;
 
   TSoccerDLLVotingRule = class(TInterfacedObject, ISoccerVotingRule)
@@ -35,8 +33,7 @@ type
   public
     constructor Create(ADLLPath: string);
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
-      out Winners: System.Generics.Collections.
-      TList<System.AnsiString>): Boolean;
+      out Winners: System.Generics.Collections.TList<System.string>): Boolean;
     function GetName: string;
     destructor Destroy; override;
   end;
@@ -44,14 +41,6 @@ type
 implementation
 
 { TDLLRule }
-
-function GetDLLRulesPath: string;
-begin
-  Result := '.\dllrules\';
-{$IFDEF DEBUG}
-  Result := '..\..\..\dllrules';
-{$ENDIF}
-end;
 
 constructor TSoccerDLLVotingRule.Create(ADLLPath: string);
 var
@@ -90,16 +79,15 @@ end;
 
 function TSoccerDLLVotingRule.ExecuteOn
   (AProfile: TSoccerVotingVotersPreferences;
-  out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
+  out Winners: System.Generics.Collections.TList<System.string>): Boolean;
 var
-  LProfile: AnsiString;
-  LPProfile: PAnsiChar;
+  LProfile: string;
+  LPProfile: PChar;
   LVoter: TSoccerVotingIndividualPreferenceProfile;
-  LPWinners: PAnsiChar;
-  LWinner: AnsiString;
-  LWinners: AnsiString;
-  LAlternative: AnsiString;
-  LPAlternative: PAnsiChar;
+  LPWinners: PChar;
+  LWinner: string;
+  LWinners: string;
+  LAlternative: string;
   i, j, LWinnersLength: integer;
 begin
   LProfile := '';
@@ -108,7 +96,7 @@ begin
     LVoter := AProfile.Profile[i];
     for j := 0 to LVoter.Count - 1 do
     begin
-      LAlternative := AnsiString(LVoter[j]);
+      LAlternative := LVoter[j];
       LProfile := LProfile + LAlternative;
       if j <> LVoter.Count - 1 then
         LProfile := LProfile + '-';
@@ -116,34 +104,20 @@ begin
     if i <> AProfile.Profile.Count - 1 then
       LProfile := LProfile + '>';
   end;
-  LPProfile := PAnsiChar(LProfile);
+  LPProfile := PChar(LProfile);
   Result := FExecuteOn(LPProfile, AProfile.Properties, LPWinners,
     LWinnersLength) > 0;
-  Winners := TList<AnsiString>.Create;
-  LWinners := AnsiString(LPWinners);
+  Winners := TList<string>.Create;
+  LWinners := LPWinners;
   for LWinner in SplitString(LWinners, '-') do
   begin
-    Winners.Add(AnsiString(LWinner));
+    Winners.Add(LWinner);
   end;
 end;
 
 function TSoccerDLLVotingRule.GetName: string;
 begin
-  Result := string(AnsiString(FGetName()));
+  Result := string(FGetName());
 end;
-
-var
-  LRule: ISoccerVotingRule;
-  LPath: string;
-
-initialization
-
-if TDirectory.Exists(GetDLLRulesPath) then
-  for LPath in TDirectory.GetFiles(GetDLLRulesPath) do
-    if TPath.GetExtension(LPath) = '.dll' then
-    begin
-      LRule := TSoccerDLLVotingRule.Create(LPath);
-      GlobalVotingRulesDict.Rules.Add(LRule.GetName, LRule);
-    end;
 
 end.

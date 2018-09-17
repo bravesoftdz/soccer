@@ -9,22 +9,19 @@ uses
 
   Soccer.Main;
 
-function ExecScript(AScript: PAnsiChar; var OutLength: Int32)
-  : PAnsiChar; stdcall;
+function ExecScript(AScript: PChar; var OutLength: Int32): PChar; stdcall;
 
-procedure FreeSoccerString(var AStr: PAnsiChar); stdcall;
+procedure FreeSoccerString(var AStr: PChar); stdcall;
 
 implementation
 
-function ExecScript(AScript: PAnsiChar; var OutLength: Int32)
-  : PAnsiChar; stdcall;
+function ExecScript(AScript: PChar; var OutLength: Int32): PChar; stdcall;
 var
   LSoccer: TSoccer;
-  LStrList: TList<AnsiString>;
-  LStr: AnsiString;
+  LStrList: TList<string>;
+  LStr: string;
   i: integer;
-  LPChar: PAnsiChar;
-  LOutString: AnsiString;
+  LOutString: string;
 begin
   LSoccer := TSoccer.Create;
   LOutString := '';
@@ -47,12 +44,12 @@ begin
     end;
   finally
     FreeAndNil(LSoccer);
-    Result := PAnsiChar(LOutString);
+    Result := PChar(LOutString);
     OutLength := Length(Result);
   end;
 end;
 
-procedure FreeSoccerString(var AStr: PAnsiChar);
+procedure FreeSoccerString(var AStr: PChar);
 begin
   AStr := nil;
 end;

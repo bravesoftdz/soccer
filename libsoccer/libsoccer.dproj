@@ -106,8 +106,8 @@
         <Manifest_File>(None)</Manifest_File>
         <DCC_ExeOutput>.\_dll\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_DcuOutput>.\_dcu\$(Platform)\$(Config)</DCC_DcuOutput>
-        <Debugger_HostApplication>C:\Prog\soccer\cmd\prot_pas\soccer.exe</Debugger_HostApplication>
-        <Debugger_RunParams>basic_voting.chosoc</Debugger_RunParams>
+        <Debugger_HostApplication>..\cmd\prot_pas\soccer.exe</Debugger_HostApplication>
+        <Debugger_RunParams>..\..\..\..\samples\chlang\basic_voting\basic_voting.chosoc</Debugger_RunParams>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <Debugger_HostApplication>D:\Prog\soccer\cmd\prot_pas\soccer.exe </Debugger_HostApplication>

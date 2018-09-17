@@ -31,7 +31,7 @@ implementation
 procedure TMainTests.FullTest;
 var
   LSoccer: TSoccer;
-  LOutput: TList<AnsiString>;
+  LOutput: TList<string>;
 begin
   LSoccer := TSoccer.Create;
   LOutput := LSoccer.ExecScript('START[voting] ' + 'IMPORT[plurality] ' +
@@ -62,7 +62,7 @@ end;
 procedure TMainTests.NoDecideCommand;
 var
   LSoccer: TSoccer;
-  LOutput: TList<AnsiString>;
+  LOutput: TList<string>;
 begin
   LSoccer := TSoccer.Create;
   Assert.WillRaise(

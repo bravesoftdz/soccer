@@ -30,7 +30,7 @@ type
   public
     function ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
       out Winners: System.Generics.Collections.
-      TList<System.AnsiString>): Boolean;
+      TList<string>): Boolean;
     function GetName: string;
   end;
 
@@ -82,9 +82,9 @@ end;
 { TUnusefulRule }
 
 function TUnusefulRule.ExecuteOn(AProfile: TSoccerVotingVotersPreferences;
-out Winners: System.Generics.Collections.TList<System.AnsiString>): Boolean;
+out Winners: System.Generics.Collections.TList<string>): Boolean;
 begin
-  Winners := TList<AnsiString>.Create;
+  Winners := TList<string>.Create;
   Winners.Add('LOL');
   Result := false;
 end;
