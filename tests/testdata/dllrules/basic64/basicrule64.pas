@@ -3,13 +3,17 @@
 }
 library basicrule;
 
-{$mode objfpc}
+{$mode delphi}
 
 uses
-  SysUtils;
+  SysUtils,
+  fgl;
 
 type
-  TProfile = array of array of ansistring;
+  TIndividualProfile = TFPGList<UnicodeString>;
+  TProfile = TFPGList<TIndividualProfile>;
+
+  PPPWideChar = ^PPWideChar;
 
   TSoccerVotersPreferencesProperties = record
     AlternativesCount: integer;
@@ -17,43 +21,51 @@ type
     Complete: boolean;
   end;
 
-  function getName: PAnsiChar; stdcall;
+  function getName: PWideChar; stdcall;
   begin
-    Result := PAnsiChar('nowinnerrule');
+    Result := PWideChar('nowinnerrule');
   end;
 
-  function ConvertProfile(AProfile: PAnsiChar): TProfile;
+  {$POINTERMATH ON}
+
+  function ConvertProfile(AProfile: PPPWideChar;
+    AProperties: TSoccerVotersPreferencesProperties): TProfile;
   var
-    LStrProfile: ansistring;
-    LVoters: TStringArray;
-    LVoter: TStringArray;
+    LVoter: PPWideChar;
+    LAlternative: PWideChar;
+    LAlternativeCopy: PWideChar;
     i, j: integer;
   begin
-    LStrProfile := ansistring(AProfile);
-    LVoters := LStrProfile.Split(['>']);
-    SetLength(Result, Length(LVoters));
-    for i := 0 to Length(LVoters)-1 do
+    Result := TProfile.Create;
+    for i := 0 to AProperties.VotersCount - 1 do
     begin
-      LVoter := LVoters[i].Split(['-']);
-      SetLength(Result[i], Length(LVoter));
-      for j := 0 to Length(LVoter)-1 do
-        Result[i][j] := LVoter[j];
+      LVoter := (AProfile + i)^;
+      Result.Add(TIndividualProfile.Create);
+      for j := 0 to AProperties.AlternativesCount - 1 do
+      begin
+        LAlternative := (LVoter + j)^;
+        GetMem(LAlternativeCopy, (StrLen(LAlternative) + 1) * SizeOf(widechar));
+        StrCopy(LAlternativeCopy, LAlternative);
+        Result[i].Add(UnicodeString(LAlternativeCopy));
+      end;
     end;
   end;
 
-  function executeOn(AProfile: PAnsiChar;
-    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: PAnsiChar;
+  {$POINTERMATH OFF}
+
+  function executeOn(AProfile: PPPWideChar;
+    AProperties: TSoccerVotersPreferencesProperties; OutWinners: PPWideChar;
   var WinnersLength: integer): integer; stdcall;
   var
     LProfile: TProfile;
-    LWinner: ansistring;
+    LWinner: UnicodeString;
   begin
     if AProperties.VotersCount = 2 then
     begin
-      LProfile := ConvertProfile(AProfile);
+      LProfile := ConvertProfile(AProfile, AProperties);
       WinnersLength := 1;
       LWinner := LProfile[1][0];
-      OutWinners := PAnsiChar(LWinner);
+      OutWinners^ := PWideChar(LWinner);
     end
     else
       Result := 0;
@@ -67,4 +79,3 @@ begin
 
 end.
 
-end.

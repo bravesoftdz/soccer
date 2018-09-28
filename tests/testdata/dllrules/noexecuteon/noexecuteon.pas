@@ -1,29 +1,35 @@
 {
  This is a DLL rule for tests. You need to compile it into Win32 DLL.
 }
-library noexecuteon;
+library basicrule;
 
-{$mode objfpc}
+{$mode delphi}
+
+uses
+  SysUtils,
+  fgl;
 
 type
-    TVoter = array of PAnsiChar;
-    TProfile = array of TVoter;
-    TWinners = array of PAnsiChar;
+  TIndividualProfile = TFPGList<UnicodeString>;
+  TProfile = TFPGList<TIndividualProfile>;
 
-    TSoccerVotersPreferencesProperties = record
-        AlternativesCount: integer;
-        VotersCount: integer;
-        Complete: boolean;
-    end;
+  PPPWideChar = ^PPWideChar;
 
-function getName: PAnsiChar; stdcall;
-begin
-  Result := PAnsiChar('nowinnerrule');
-end;
+  TSoccerVotersPreferencesProperties = record
+    AlternativesCount: integer;
+    VotersCount: integer;
+    Complete: boolean;
+  end;
+
+  function getName: PWideChar; stdcall;
+  begin
+    Result := PWideChar('nowinnerrule');
+  end;
 
 exports
-    getName;
+  getName;
 
 begin
-  
+
 end.
+

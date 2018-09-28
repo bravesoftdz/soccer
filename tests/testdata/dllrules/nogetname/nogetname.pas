@@ -1,32 +1,75 @@
 {
  This is a DLL rule for tests. You need to compile it into Win32 DLL.
 }
-library nogetname;
+library basicrule;
 
-{$mode objfpc}
+{$mode delphi}
+
+uses
+  SysUtils,
+  fgl;
 
 type
-    TVoter = array of PAnsiChar;
-    TProfile = array of TVoter;
-    TWinners = array of PAnsiChar;
+  TIndividualProfile = TFPGList<UnicodeString>;
+  TProfile = TFPGList<TIndividualProfile>;
 
-    TSoccerVotersPreferencesProperties = record
-        AlternativesCount: integer;
-        VotersCount: integer;
-        Complete: boolean;
+  PPPWideChar = ^PPWideChar;
+
+  TSoccerVotersPreferencesProperties = record
+    AlternativesCount: integer;
+    VotersCount: integer;
+    Complete: boolean;
+  end;
+
+  {$POINTERMATH ON}
+
+  function ConvertProfile(AProfile: PPPWideChar;
+    AProperties: TSoccerVotersPreferencesProperties): TProfile;
+  var
+    LVoter: PPWideChar;
+    LAlternative: PWideChar;
+    LAlternativeCopy: PWideChar;
+    i, j: integer;
+  begin
+    Result := TProfile.Create;
+    for i := 0 to AProperties.VotersCount - 1 do
+    begin
+      LVoter := (AProfile + i)^;
+      Result.Add(TIndividualProfile.Create);
+      for j := 0 to AProperties.AlternativesCount - 1 do
+      begin
+        LAlternative := (LVoter + j)^;
+        GetMem(LAlternativeCopy, (StrLen(LAlternative) + 1) * SizeOf(widechar));
+        StrCopy(LAlternativeCopy, LAlternative);
+        Result[i].Add(UnicodeString(LAlternativeCopy));
+      end;
     end;
+  end;
 
-function executeOn(AProfile: PAnsiChar;
-    AProperties: TSoccerVotersPreferencesProperties; var OutWinners: PAnsiChar;
+  {$POINTERMATH OFF}
+
+  function executeOn(AProfile: PPPWideChar;
+    AProperties: TSoccerVotersPreferencesProperties; OutWinners: PPWideChar;
   var WinnersLength: integer): integer; stdcall;
-begin
-  Result := 0;
-  WinnersLength := 0;
-end;
+  var
+    LProfile: TProfile;
+    LWinner: UnicodeString;
+  begin
+    if AProperties.VotersCount = 2 then
+    begin
+      LProfile := ConvertProfile(AProfile, AProperties);
+      WinnersLength := 1;
+      LWinner := LProfile[1][0];
+      OutWinners^ := PWideChar(LWinner);
+    end
+    else
+      Result := 0;
+  end;
 
-exports 
-    executeOn;
+exports
+  executeOn;
 
 begin
-  
+
 end.
+
