@@ -24,7 +24,7 @@ type
 
   TSoccerGetNameProc = function(): PChar; stdcall;
   TSoccerExecuteOnProc = function(AProfile: PPPChar;
-    AProperties: TSoccerVotersPreferencesProperties; OutWinners: PPChar;
+    AProperties: TSoccerVotersPreferencesProperties; OutWinners: PPPChar;
     var WinnersLength: integer): integer; stdcall;
 
   TSoccerDLLVotingRule = class(TInterfacedObject, ISoccerVotingRule)
@@ -79,7 +79,6 @@ begin
   FreeMem(APtr, SizeOf(PPChar) * AOriginalList.Count);
 end;
 
-{$POINTERMATH OFF}
 { TDLLRule }
 
 constructor TSoccerDLLVotingRule.Create(ADLLPath: string);
@@ -122,11 +121,12 @@ function TSoccerDLLVotingRule.ExecuteOn
   out Winners: System.Generics.Collections.TList<System.string>): Boolean;
 var
   LProfile: PPPChar;
-  LPPWinners: PPChar;
-  LPWinners: PChar;
+  LPPWinners: PPPChar;
+  LPWinners: PPChar;
   LWinner: string;
   LWinners: string;
   LWinnersLength: integer;
+  i: integer;
 begin
   LProfile := StrListToPtr(AProfile.Profile);
   New(LPPWinners);
@@ -134,9 +134,9 @@ begin
     LWinnersLength) > 0;
   LPWinners := LPPWinners^;
   Winners := TList<string>.Create;
-  LWinners := LPWinners;
-  for LWinner in SplitString(LWinners, '-') do
+  for i := 0 to LWinnersLength - 1 do
   begin
+    LWinner := string(PChar((LPWinners + i)^));
     Winners.Add(LWinner);
   end;
   FreeArrPtr(LProfile, AProfile.Profile);
@@ -147,5 +147,7 @@ function TSoccerDLLVotingRule.GetName: string;
 begin
   Result := string(FGetName());
 end;
+
+{$POINTERMATH OFF}
 
 end.

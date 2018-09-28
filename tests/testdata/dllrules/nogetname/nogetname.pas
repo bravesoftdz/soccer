@@ -12,6 +12,7 @@ uses
 type
   TIndividualProfile = TFPGList<UnicodeString>;
   TProfile = TFPGList<TIndividualProfile>;
+  TWinners = TFPGList<UnicodeString>;
 
   PPPWideChar = ^PPWideChar;
 
@@ -46,21 +47,33 @@ type
     end;
   end;
 
+  function ConvertWinners(AWinners: TWinners): PPWideChar;
+  var
+    i: integer;
+  begin
+    New(Result);
+    for i := 0 to AWinners.Count-1 do
+    begin
+      (Result + i)^ := strnew(PWideChar(AWinners[i]));
+    end;
+  end;
+
   {$POINTERMATH OFF}
 
   function executeOn(AProfile: PPPWideChar;
-    AProperties: TSoccerVotersPreferencesProperties; OutWinners: PPWideChar;
+    AProperties: TSoccerVotersPreferencesProperties; OutWinners: PPPWideChar;
   var WinnersLength: integer): integer; stdcall;
   var
     LProfile: TProfile;
-    LWinner: UnicodeString;
+    LWinners: TWinners;
   begin
     if AProperties.VotersCount = 2 then
     begin
       LProfile := ConvertProfile(AProfile, AProperties);
       WinnersLength := 1;
-      LWinner := LProfile[1][0];
-      OutWinners^ := PWideChar(LWinner);
+      LWinners := TWinners.Create;
+      LWinners.Add(LProfile[1][0]);
+      OutWinners^ := ConvertWinners(LWinners);
     end
     else
       Result := 0;

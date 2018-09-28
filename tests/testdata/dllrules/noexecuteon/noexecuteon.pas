@@ -12,6 +12,7 @@ uses
 type
   TIndividualProfile = TFPGList<UnicodeString>;
   TProfile = TFPGList<TIndividualProfile>;
+  TWinners = TFPGList<UnicodeString>;
 
   PPPWideChar = ^PPWideChar;
 
