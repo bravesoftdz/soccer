@@ -1,0 +1,1 @@
+gcc -Wall kemeny.cpp -lstdc++ -o kemeny.exe
