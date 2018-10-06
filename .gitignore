@@ -149,7 +149,11 @@ lib/
 # Application bundle for Mac OS
 *.app/
 
+#-----------------------------------user-defined------------------------------------------
+
 #DelphiCodeCoverage reports
 tests/Win32/Debug/coverage/*
 #DUnitX report
 tests/Win32/Debug/dunitx-results.xml
+#VSCode settings
+.vscode
