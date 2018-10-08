@@ -4,9 +4,10 @@
 #include <set>
 #include <algorithm>
 #include <climits>
-using namespace std;
 
-typedef vector<vector<string>> preference_profile;
+#include "kemeny.h"
+
+using namespace std;
 
 vector<set<string>> compute_all_subsets_of_size(int size, vector<string> supervector)
 {
@@ -44,13 +45,13 @@ vector<set<string>> compute_all_subsets_of_size(int size, vector<string> superve
             }
             unsigned int border = supervector.size() - (pointers.size() - 1 - i);
             if (sum_i >= border)
+            {
+                pointers.at(i) = 1;
+                if (i == 0)
                 {
-                    pointers.at(i) = 1;
-                    if (i == 0)
-                    {
-                        finished = true;
-                    }
+                    finished = true;
                 }
+            }
             else
             {
                 break;
@@ -83,7 +84,7 @@ int compute_KT_distance(vector<vector<string>> profile, vector<string> ranking)
                         index_2 = k;
                     }
                 }
-                if (index_2 > index_1)
+                if (index_2 < index_1)
                 {
                     kt_dist += 1;
                 }
@@ -91,6 +92,28 @@ int compute_KT_distance(vector<vector<string>> profile, vector<string> ranking)
         }
     }
     return kt_dist;
+}
+
+void print_data_table(map<set<string>, vector<string>> data_table)
+{
+    cout << "---------------------------------" << endl;
+    for (auto it = data_table.begin(); it != data_table.end(); it++)
+    {
+        set<string> l_set = it->first;
+        cout << "{ ";
+        for (string elem : l_set)
+        {
+            cout << elem << " ";
+        }
+        cout << "} || [ ";
+        vector<string> l_vec = it->second;
+        for (string elem : l_vec)
+        {
+            cout << elem << " ";
+        }
+        cout << "]" << endl;
+    }
+    cout << "---------------------------------" << endl;
 }
 
 bool compute_kemeny_ranking(preference_profile &profile, vector<string> &out_winners)
@@ -148,7 +171,7 @@ bool compute_kemeny_ranking(preference_profile &profile, vector<string> &out_win
                     vector<string> ranking;
                     ranking.push_back(first_alternative);
                     ranking.insert(ranking.end(), subsubranking.begin(), subsubranking.end());
-                    int kt_dist = compute_kemeny_ranking(profile, ranking);
+                    int kt_dist = compute_KT_distance(profile, ranking);
                     //if it's better for a current subset, then save it
                     if (kt_dist < best_kt_dist)
                     {
@@ -160,68 +183,11 @@ bool compute_kemeny_ranking(preference_profile &profile, vector<string> &out_win
                 data_table[subset] = best_rank;
             }
         }
+        // print_data_table(data_table);
     }
     //Extract the best ranking
     set<string> alternatives_set(alternatives.begin(), alternatives.end());
     vector<string> kemeny_ranking = data_table[alternatives_set];
-    out_winners.push_back(kemeny_ranking.at(0));
+    out_winners = kemeny_ranking;
     return true;
-}
-
-int main(int argc, char const *argv[])
-{
-    //subsets
-    vector<string> supervector = {"a", "b", "c", "d"};
-    vector<set<string>> subsets = compute_all_subsets_of_size(2, supervector);
-    for (set<string> subset : subsets)
-    {
-        cout << "|";
-        for (string elem : subset)
-        {
-            cout << elem << "|";
-        }
-        cout << endl;
-    }
-
-    subsets = compute_all_subsets_of_size(3, supervector);
-    for (set<string> subset : subsets)
-    {
-        cout << "|";
-        for (string elem : subset)
-        {
-            cout << elem << "|";
-        }
-        cout << endl;
-    }
-
-    subsets = compute_all_subsets_of_size(4, supervector);
-    for (set<string> subset : subsets)
-    {
-        cout << "|";
-        for (string elem : subset)
-        {
-            cout << elem << "|";
-        }
-        cout << endl;
-    }
-
-    //     //Kemeny
-    //     int n = 1; //number of voters
-    //     int m = 3; //number of alternatives
-
-    //     preference_profile profile(n, vector<string>(m));
-    //     profile.at(0).at(0) = "a";
-    //     profile.at(0).at(1) = "b";
-    //     profile.at(0).at(2) = "c";
-
-    //     vector<string> winners;
-
-    //     compute_kemeny_ranking(profile, winners);
-
-    //     for (string winner : winners)
-    //     {
-    //         cout << winner << endl;
-    //     }
-
-    return 0;
 }
