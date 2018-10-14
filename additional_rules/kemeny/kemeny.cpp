@@ -9,9 +9,9 @@
 
 using namespace std;
 
-vector<set<string>> compute_all_subsets_of_size(int size, vector<string> supervector)
+vector<set<wstring>> compute_all_subsets_of_size(int size, vector<wstring> supervector)
 {
-    vector<set<string>> result;
+    vector<set<wstring>> result;
     vector<unsigned int> pointers;
     for (int i = 0; i < size; i++)
     {
@@ -27,7 +27,7 @@ vector<set<string>> compute_all_subsets_of_size(int size, vector<string> superve
     bool finished = false;
     while (!finished)
     {
-        set<string> l_set;
+        set<wstring> l_set;
         int sum = 0;
         for (int pointer : pointers)
         {
@@ -61,16 +61,16 @@ vector<set<string>> compute_all_subsets_of_size(int size, vector<string> superve
     return result;
 }
 
-int compute_KT_distance(vector<vector<string>> profile, vector<string> ranking)
+int compute_KT_distance(vector<vector<wstring>> profile, vector<wstring> ranking)
 {
     int kt_dist = 0;
     for (unsigned int i = 0; i < ranking.size(); i++)
     {
-        string alt_1 = ranking.at(i);
+        wstring alt_1 = ranking.at(i);
         for (unsigned int j = i + 1; j < ranking.size(); j++)
         {
-            string alt_2 = ranking.at(j);
-            for (vector<string> voter : profile)
+            wstring alt_2 = ranking.at(j);
+            for (vector<wstring> voter : profile)
             {
                 int index_1, index_2;
                 for (unsigned int k = 0; k < voter.size(); k++)
@@ -94,50 +94,50 @@ int compute_KT_distance(vector<vector<string>> profile, vector<string> ranking)
     return kt_dist;
 }
 
-void print_data_table(map<set<string>, vector<string>> data_table)
+void print_data_table(map<set<wstring>, vector<wstring>> data_table)
 {
-    cout << "---------------------------------" << endl;
+    wcout << "---------------------------------" << endl;
     for (auto it = data_table.begin(); it != data_table.end(); it++)
     {
-        set<string> l_set = it->first;
-        cout << "{ ";
-        for (string elem : l_set)
+        set<wstring> l_set = it->first;
+        wcout << "{ ";
+        for (wstring elem : l_set)
         {
-            cout << elem << " ";
+            wcout << elem << " ";
         }
-        cout << "} || [ ";
-        vector<string> l_vec = it->second;
-        for (string elem : l_vec)
+        wcout << "} || [ ";
+        vector<wstring> l_vec = it->second;
+        for (wstring elem : l_vec)
         {
-            cout << elem << " ";
+            wcout << elem << " ";
         }
-        cout << "]" << endl;
+        wcout << "]" << endl;
     }
-    cout << "---------------------------------" << endl;
+    wcout << "---------------------------------" << endl;
 }
 
-bool compute_kemeny_ranking(preference_profile &profile, vector<string> &out_winners)
+bool compute_kemeny_ranking(preference_profile &profile, vector<wstring> &out_winners)
 {
     //build a list of alternatives
-    vector<string> alternatives(profile.at(0).size());
+    vector<wstring> alternatives(profile.at(0).size());
     for (unsigned int i = 0; i < alternatives.size(); i++)
     {
         alternatives.at(i) = profile.at(0).at(i);
     }
 
     //create a data-table
-    map<set<string>, vector<string>> data_table;
+    map<set<wstring>, vector<wstring>> data_table;
 
     //Iterate over set sizes
     for (unsigned int i = 2; i <= alternatives.size(); i++)
     {
-        vector<set<string>> subsets = compute_all_subsets_of_size(i, alternatives);
+        vector<set<wstring>> subsets = compute_all_subsets_of_size(i, alternatives);
         if (i == 2)
         {
             //Compute KT distances for pairs (base step)
-            for (set<string> subset : subsets)
+            for (set<wstring> subset : subsets)
             {
-                std::vector<string> rank(subset.begin(), subset.end());
+                std::vector<wstring> rank(subset.begin(), subset.end());
                 int kt_1 = compute_KT_distance(profile, rank);
                 std::reverse(rank.begin(), rank.end());
                 int kt_2 = compute_KT_distance(profile, rank);
@@ -155,20 +155,20 @@ bool compute_kemeny_ranking(preference_profile &profile, vector<string> &out_win
         else
         {
             //Compute KT distances for subsets with 3 and more elements using previous subsets
-            for (set<string> subset : subsets)
+            for (set<wstring> subset : subsets)
             {
                 //Try to set a particular alternative as a first one
                 int best_kt_dist = INT_MAX;
-                vector<string> best_rank;
-                for (string first_alternative : subset)
+                vector<wstring> best_rank;
+                for (wstring first_alternative : subset)
                 {
                     //Copy set and remove the selected alternative
-                    set<string> subsubset = subset;
+                    set<wstring> subsubset = subset;
                     subsubset.erase(first_alternative);
                     //find a best ranking for a subset without selected alternative
-                    vector<string> subsubranking = data_table[subsubset];
+                    vector<wstring> subsubranking = data_table[subsubset];
                     //add selected alternative as the first in a new ranking
-                    vector<string> ranking;
+                    vector<wstring> ranking;
                     ranking.push_back(first_alternative);
                     ranking.insert(ranking.end(), subsubranking.begin(), subsubranking.end());
                     int kt_dist = compute_KT_distance(profile, ranking);
@@ -186,8 +186,8 @@ bool compute_kemeny_ranking(preference_profile &profile, vector<string> &out_win
         // print_data_table(data_table);
     }
     //Extract the best ranking
-    set<string> alternatives_set(alternatives.begin(), alternatives.end());
-    vector<string> kemeny_ranking = data_table[alternatives_set];
+    set<wstring> alternatives_set(alternatives.begin(), alternatives.end());
+    vector<wstring> kemeny_ranking = data_table[alternatives_set];
     out_winners = kemeny_ranking;
     return true;
 }

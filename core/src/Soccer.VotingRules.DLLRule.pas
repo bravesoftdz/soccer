@@ -25,7 +25,7 @@ type
   TSoccerGetNameProc = function(): PChar; stdcall;
   TSoccerExecuteOnProc = function(AProfile: PPPChar;
     AProperties: TSoccerVotersPreferencesProperties; OutWinners: PPPChar;
-    var WinnersLength: integer): integer; stdcall;
+    var WinnersLength: PInt64): integer; stdcall;
 
   TSoccerDLLVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   private
@@ -93,14 +93,14 @@ begin
   FHandle := LoadLibrary(WCharPath);
   if FHandle <> 0 then
   begin
-    @FExecuteOn := GetProcAddress(FHandle, 'executeOn');
-    if @FExecuteOn = nil then
-      raise ESoccerParserException.Create('Library "' + ADLLPath +
-        '" has no "executeOn" function');
     @FGetName := GetProcAddress(FHandle, 'getName');
     if @FGetName = nil then
       raise ESoccerParserException.Create('Library "' + ADLLPath +
         '" has no "getName" function');
+    @FExecuteOn := GetProcAddress(FHandle, 'executeOn');
+    if @FExecuteOn = nil then
+      raise ESoccerParserException.Create('Library "' + ADLLPath +
+        '" has no "executeOn" function');
   end
   else
   begin
@@ -125,7 +125,7 @@ var
   LPWinners: PPChar;
   LWinner: string;
   LWinners: string;
-  LWinnersLength: integer;
+  LWinnersLength: PInt64;
   i: integer;
 begin
   LProfile := StrListToPtr(AProfile.Profile);
@@ -134,7 +134,7 @@ begin
     LWinnersLength) > 0;
   LPWinners := LPPWinners^;
   Winners := TList<string>.Create;
-  for i := 0 to LWinnersLength - 1 do
+  for i := 0 to LWinnersLength^ - 1 do
   begin
     LWinner := string(PChar((LPWinners + i)^));
     Winners.Add(LWinner);

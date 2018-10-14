@@ -1,1 +1,0 @@
-g++ -Wall -shared kemenyexport.cpp -o ..\kemenydll.dll
