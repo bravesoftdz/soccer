@@ -19,7 +19,8 @@ uses
   Soccer.VotingRules.Plurality in '..\core\src\Soccer.VotingRules.Plurality.pas',
   Soccer.VotingRules.Condorcet in '..\core\src\Soccer.VotingRules.Condorcet.pas',
   Soccer.VotingRules.Borda in '..\core\src\Soccer.VotingRules.Borda.pas',
-  Soccer.VotingRules.DLLRule in '..\core\src\Soccer.VotingRules.DLLRule.pas';
+  Soccer.VotingRules.DLLRule in '..\core\src\Soccer.VotingRules.DLLRule.pas',
+  Soccer.Voting.DLLRulesInitializer in '..\core\src\Soccer.Voting.DLLRulesInitializer.pas';
 
 {$R *.res}
 

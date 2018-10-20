@@ -23,7 +23,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="..\..\samples\chlang\basic_voting\basic_voting.chosoc"/>
+        <CommandLineParams Value="condorcet.chosoc"/>
       </local>
     </RunParams>
     <Units Count="1">

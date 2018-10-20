@@ -9,14 +9,15 @@ uses
   function ExecScript(AScript: PWideChar; var OutLength: Int32): PPWideChar;
   stdcall; external 'libsoccer.dll';
 
-  procedure FreeSoccerPtr(var APtr: PPWideChar; ALength: Int32); stdcall; external 'libsoccer.dll';
+  procedure FreeSoccerPtr(var APtr: PPWideChar; ALength: Int32);
+  stdcall; external 'libsoccer.dll';
 
   function ParseSoccerOutputToArray(ASoccerOut: PPWideChar;
     AWinnersLength: integer): TStringArray;
   var
     i: integer;
     LWinner: PWideChar;
-    LWinnerStr : ansistring;
+    LWinnerStr: ansistring;
   begin
     for i := 0 to AWinnersLength - 1 do
     begin
@@ -54,16 +55,22 @@ begin
       LScript := PWideChar(LTest);
       LOutPointer := ExecScript(LScript, LOutLength);
       LOutArr := ParseSoccerOutputToArray(LOutPointer, LOutLength);
-      if LOutArr[0] = 'error' then
-        Writeln(LOutArr[0] + ': ' + LOutArr[1])
+      if Length(LOutArr) > 0 then
+        if LOutArr[0] = 'error' then
+          if Length(LOutArr) > 1 then
+            Writeln(LOutArr[0] + ': ' + LOutArr[1])
+          else
+            Writeln('error: no information about the failure')
+        else
+        begin
+          Writeln('Selected with ' + LOutArr[0]);
+          Write('Winners: ');
+          for i := 1 to Length(LOutArr) - 1 do
+            Write(LOutArr[i] + ' ');
+          Writeln();
+        end
       else
-      begin
-        Writeln('Selected with ' + LOutArr[0]);
-        Write('Winners: ');
-        for i := 1 to Length(LOutArr) - 1 do
-          Write(LOutArr[i] + ' ');
-        Writeln();
-      end;
+        Writeln('Unknown error: no output from core');
     except
       on E: Exception do
         Writeln(E.Message);
@@ -72,4 +79,5 @@ begin
     FreeAndNil(LStringList);
     FreeSoccerPtr(LOutPointer, LOutLength);
   end;
+  ReadLn;
 end.

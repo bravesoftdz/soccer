@@ -1,0 +1,19 @@
+START[voting]
+//
+This example illustrates borda method
+
+In this case the first alternative recieves 2
+points, the second 1 point and the last 0
+points. Borda rule returns all alternatives
+with a highest score.
+
+windows has 4 points
+ios and android have 3 points
+
+Borda is a good general method. 
+\\
+IMPORT[borda]
+VOTE(ios->windows->android)
+VOTE(android->windows->ios)
+VOTE(windows->ios->android)
+DECIDE!

@@ -1,0 +1,18 @@
+START[voting]
+//This example illustrates usage of comments
+  In chosoc there are only multiline comments.
+  You start a comment with "//" symbols and 
+  a command separator (!important!) and end
+  a comment with "\\" and a command separator.
+  If command separator isn't present, some
+  error could happen!
+  
+  Also a comment should contain one or more
+  command separators
+  
+  It's also important that no comment can be
+  placed before "START" command
+\\
+IMPORT[borda]
+VOTE(lol->kek)
+DECIDE!

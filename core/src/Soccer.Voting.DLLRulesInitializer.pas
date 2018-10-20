@@ -17,10 +17,7 @@ implementation
 
 function GetDLLRulesPath: string;
 begin
-  Result := '.\dllrules\';
-{$IFDEF DEBUG}
-  Result := '..\..\..\dllrules';
-{$ENDIF}
+  Result := '.\dllrules\'
 end;
 
 var

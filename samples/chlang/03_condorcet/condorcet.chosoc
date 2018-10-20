@@ -1,0 +1,30 @@
+START[voting]
+//
+This illustrates one of the use-cases for soccer:
+Three students try to decide which project the want to build:
+1) A knowldege graph
+2) A ship
+3) A satellite
+4) Image recognition software
+5) Robot that checks wine quality
+6) Software for visualisation of Wikipedia edits
+
+They are trying to check whether there is a Condorcet winner. 
+A Condorcet winner is an alternative that wins every pairwise
+majority comparison: for any other alternative a Condorset winner
+is considered better then a by a majority of voters
+\\
+IMPORT[condorcet]
+//Student 1 \\
+VOTE(knowledge_graph->ship->satellite->image_recognition->wine_quality->wikipedia_visualisation)
+//Student 2 \\
+VOTE(satellite->wine_quality->image_recognition->ship->knowledge_graph->wikipedia_visualisation)
+//Student 3 \\
+VOTE(knowledge_graph->wikipedia_visualisation->ship->satellite->wine_quality->image_recognition)
+//
+Spoiler:
+Condorcet winner is knowledge_graph, which is ranked as the first one
+by two students. knowledge_graph is also a winner of plurality here,
+but Condorcet winner is rarely one that will be chosen by plurality
+\\
+DECIDE!

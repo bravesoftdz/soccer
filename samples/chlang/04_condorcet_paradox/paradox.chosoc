@@ -1,0 +1,24 @@
+START[voting]
+//
+Sometimes there are situations when
+voters just can't find a reasonable
+decision. It's normal. In this case
+you can pick a random alternative or
+find more voters. 
+
+This script will throw an error, because
+the "condorcet" rule tries to find a
+Condorcet winner, but there isn't any. Such
+situation has a name "Condorcet paradox"
+\\
+IMPORT[condorcet]
+//
+If you want to check whether a Condorcet 
+winner exists then import a rule which
+doesn't stop if no Condorcet winner found:
+IMPORT[condorcet_empty]
+\\
+VOTE(train->bus->airplane->walk)
+VOTE(bus->airplane->train->walk)
+VOTE(airplane->train->bus->walk)
+DECIDE!
