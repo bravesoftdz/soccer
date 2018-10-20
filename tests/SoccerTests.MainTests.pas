@@ -34,7 +34,7 @@ var
   LOutput: TList<string>;
 begin
   LSoccer := TSoccer.Create;
-  LOutput := LSoccer.ExecScript('START[voting] ' + 'IMPORT[plurality] ' +
+  LOutput := LSoccer.ExecScript('START[voting] ' + 'IMPORT[plurality] ' + '//we use plurality\\ ' +
     'VOTE(a->b->c) ' + 'VOTE(c->b->a) ' + 'VOTE(b->a->c) ' + 'VOTE(a->b->c) ' +
     'DECIDE! ');
   Assert.IsTrue(LOutput.Count = 2);

@@ -121,7 +121,6 @@
         <DCCReference Include="SoccerTests.VotingBordaTests.pas"/>
         <DCCReference Include="..\core\src\Soccer.VotingRules.DLLRule.pas"/>
         <DCCReference Include="SoccerTests.DLLRuleTests.pas"/>
-        <DCCReference Include="..\core\src\Soccer.Voting.DLLRulesInitializer.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

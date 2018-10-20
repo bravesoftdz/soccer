@@ -98,7 +98,9 @@ var
   LStartingPoint: integer;
   i: integer;
   LAction: ISoccerAction;
+  LCommentFlag: boolean;
 begin
+  LCommentFlag := false;
   LStartingPoint := FindStartingToken(AScript);
   for i := LStartingPoint to AScript.Length - 1 do
   begin
@@ -108,7 +110,27 @@ begin
         continue
       else
       begin
-        { Is command, find an appropriate action }
+        { Is that a comment? }
+        if LCommand.Trim.StartsWith('//') then
+        begin
+          LCommand := '';
+          LCommentFlag := true;
+          continue;
+        end;
+        { Is that an end of comment? }
+        if LCommand.Trim.EndsWith('\\') then
+        begin
+          LCommentFlag := false;
+          LCommand := '';
+          continue;
+        end;
+        { Are we in a middle of comment now? }
+        if LCommentFlag then
+        begin
+          LCommand := '';
+          continue;
+        end;
+        { If it's a true command, find an appropriate action }
         if FDomain.SupportsCommand(LCommand) then
         begin
           LAction := FDomain.GetActionForCommand(LCommand.Trim);

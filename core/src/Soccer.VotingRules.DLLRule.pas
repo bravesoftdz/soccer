@@ -124,7 +124,6 @@ var
   LPPWinners: PPPChar;
   LPWinners: PPChar;
   LWinner: string;
-  LWinners: string;
   LWinnersLength: Int64;
   i: integer;
 begin
