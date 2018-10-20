@@ -32,7 +32,6 @@ extern "C"
 			return 0;
 
 		//Convert
-		cout << "Convert" << endl;
 		vector<vector<std::wstring>> profile(a_properties.voters_count, vector<wstring>(a_properties.alternatives_count));
 		for (int i = 0; i < a_properties.voters_count; i++)
 		{
@@ -43,23 +42,16 @@ extern "C"
 			}
 		}
 
-		cout << "Call" << endl;
-		vector<wstring> winners = {L"alt2"};
-		int res = 1;
-		// int res = compute_kemeny_ranking(profile, winners);
+		vector<wstring> winners;
+		int res = compute_kemeny_ranking(profile, winners);
 
-		cout << "Back" << endl;
-		out_winners = (wchar_t ***)malloc(sizeof(wchar_t **));
+		//The first alternative is a winner
 		(*out_winners) = (wchar_t **)malloc(sizeof(wchar_t *));
 		(*out_winners)[0] = (wchar_t *)malloc(sizeof(wchar_t) * (winners.size() + 1));
 		wcscpy((*out_winners)[0], winners.at(0).c_str());
 
-		cout << "Return" << endl;
-		cout << "Result:" << endl;
-		cout << out_winners << " " << (*out_winners) << " " << (*out_winners)[0] << endl;
-
-		winnersLength = (int64_t *)malloc(sizeof(int64_t));
-		(*winnersLength) = 1;
+		//As we take only the first alternative, there is always a single winner
+		*winnersLength = 1;
 
 		return res;
 	}

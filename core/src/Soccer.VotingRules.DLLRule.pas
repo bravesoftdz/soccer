@@ -25,7 +25,7 @@ type
   TSoccerGetNameProc = function(): PChar; stdcall;
   TSoccerExecuteOnProc = function(AProfile: PPPChar;
     AProperties: TSoccerVotersPreferencesProperties; OutWinners: PPPChar;
-    var WinnersLength: PInt64): integer; stdcall;
+    var WinnersLength: Int64): integer; stdcall;
 
   TSoccerDLLVotingRule = class(TInterfacedObject, ISoccerVotingRule)
   private
@@ -125,7 +125,7 @@ var
   LPWinners: PPChar;
   LWinner: string;
   LWinners: string;
-  LWinnersLength: PInt64;
+  LWinnersLength: Int64;
   i: integer;
 begin
   LProfile := StrListToPtr(AProfile.Profile);
@@ -134,7 +134,7 @@ begin
     LWinnersLength) > 0;
   LPWinners := LPPWinners^;
   Winners := TList<string>.Create;
-  for i := 0 to LWinnersLength^ - 1 do
+  for i := 0 to LWinnersLength - 1 do
   begin
     LWinner := string(PChar((LPWinners + i)^));
     Winners.Add(LWinner);
