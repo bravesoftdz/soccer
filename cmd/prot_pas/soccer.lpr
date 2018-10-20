@@ -6,33 +6,32 @@ uses
   SysUtils,
   Classes;
 
-  function ExecScript(AScript: PWideChar; var OutLength: Int32): PWideChar;
+  function ExecScript(AScript: PWideChar; var OutLength: Int32): PPWideChar;
   stdcall; external 'libsoccer.dll';
 
-  procedure FreeSoccerString(var AStr: PWideChar); stdcall; external 'libsoccer.dll';
+  procedure FreeSoccerPtr(var APtr: PPWideChar; ALength: Int32); stdcall; external 'libsoccer.dll';
 
-  function ParseSoccerOutputToArray(ASoccerOut: PWideChar): TStringArray;
+  function ParseSoccerOutputToArray(ASoccerOut: PPWideChar;
+    AWinnersLength: integer): TStringArray;
   var
-    LStr: ansistring;
+    i: integer;
+    LWinner: PWideChar;
+    LWinnerStr : ansistring;
   begin
-    LStr := ansistring(ASoccerOut);
-    while Pos('<>', LStr) <> 0 do
+    for i := 0 to AWinnersLength - 1 do
     begin
+      LWinner := (ASoccerOut + i)^;
+      LWinnerStr := ansistring(LWinner);
       SetLength(Result, Length(Result) + 1);
-      Result[Length(Result) - 1] := LStr.Substring(0, Pos('<>', LStr) + 1);
-      LStr := LStr.Substring(Pos('<>', LStr) + 1);
-      Result[Length(Result) - 1] :=
-        Result[Length(Result) - 1].Substring(0, Length(Result[Length(Result) - 1]) - 2);
+      Result[Length(Result) - 1] := LWinnerStr;
     end;
-    SetLength(Result, Length(Result) + 1);
-    Result[Length(Result) - 1] := LStr;
   end;
 
 var
   LFileName: string;
   LStringList: TStringList;
   LScript: PWideChar;
-  LOutStr: PWideChar;
+  LOutPointer: PPWideChar;
   LOutLength: Int32;
   LTest: UnicodeString;
   LOutArr: TStringArray;
@@ -47,13 +46,14 @@ begin
     exit;
   end;
   LStringList := TStringList.Create;
+  LOutLength := 0;
   try
     try
       LStringList.LoadFromFile(LFileName);
       LTest := UnicodeString(Copy(LStringList.Text, 1, Length(LStringList.Text)));
       LScript := PWideChar(LTest);
-      LOutStr := ExecScript(LScript, LOutLength);
-      LOutArr := ParseSoccerOutputToArray(LOutStr);
+      LOutPointer := ExecScript(LScript, LOutLength);
+      LOutArr := ParseSoccerOutputToArray(LOutPointer, LOutLength);
       if LOutArr[0] = 'error' then
         Writeln(LOutArr[0] + ': ' + LOutArr[1])
       else
@@ -70,6 +70,6 @@ begin
     end;
   finally
     FreeAndNil(LStringList);
-    FreeSoccerString(LOutStr);
+    FreeSoccerPtr(LOutPointer, LOutLength);
   end;
 end.

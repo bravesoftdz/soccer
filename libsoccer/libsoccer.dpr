@@ -25,7 +25,7 @@ uses
 
 exports
   LibSoccer.Export.ExecScript,
-  LibSoccer.Export.FreeSoccerString;
+  LibSoccer.Export.FreeSoccerPtr;
 
 begin
 

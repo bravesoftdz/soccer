@@ -9,13 +9,15 @@ uses
 
   Soccer.Main;
 
-function ExecScript(AScript: PChar; var OutLength: Int32): PChar; stdcall;
+function ExecScript(AScript: PChar; var OutLength: Int32): PPChar; stdcall;
 
-procedure FreeSoccerString(var AStr: PChar); stdcall;
+procedure FreeSoccerPtr(var APtr: PPChar; ALength: Int32); stdcall;
 
 implementation
 
-function ExecScript(AScript: PChar; var OutLength: Int32): PChar; stdcall;
+{$POINTERMATH ON}
+
+function ExecScript(AScript: PChar; var OutLength: Int32): PPChar;
 var
   LSoccer: TSoccer;
   LStrList: TList<string>;
@@ -28,30 +30,37 @@ begin
   try
     try
       LStrList := LSoccer.ExecScript(AScript);
+      GetMem(Result, SizeOf(PWideChar) * LStrList.Count);
       for i := 0 to LStrList.Count - 1 do
       begin
-        LStr := LStrList[i];
-        if i = 0 then
-          LOutString := LStr
-        else
-          LOutString := LOutString + '<>' + LStr;
+        (Result + i)^ := StrNew(PChar(LStrList[i]));
       end;
+      OutLength := LStrList.Count;
     except
       on E: Exception do
       begin
-        LOutString := 'error<>' + E.ClassName + ': ' + E.Message;
+        GetMem(Result, SizeOf(PWideChar) * 2);
+        Result^ := PChar('error');
+        (Result + 1)^ := StrNew(PChar(E.ClassName + ' :' + E.Message));
+        OutLength := 2;
       end;
     end;
   finally
     FreeAndNil(LSoccer);
-    Result := PChar(LOutString);
-    OutLength := Length(Result);
   end;
 end;
 
-procedure FreeSoccerString(var AStr: PChar);
+procedure FreeSoccerPtr(var APtr: PPChar; ALength: Int32);
+var
+  i: integer;
 begin
-  AStr := nil;
+  for i := 0 to ALength - 1 do
+  begin
+    StrDispose((APtr + i)^);
+  end;
+  Dispose(APtr);
 end;
+
+{$POINTERMATH OFF}
 
 end.
