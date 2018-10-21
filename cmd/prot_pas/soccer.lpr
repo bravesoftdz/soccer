@@ -56,14 +56,10 @@ begin
   LOutLength := 0;
   try
     try
-      Writeln('Load from file');
       LStringList.LoadFromFile(LFileName);
       LTest := UnicodeString(Copy(LStringList.Text, 1, Length(LStringList.Text)));
       LScript := PWideChar(LTest);
-      Writeln('Calling core');
       LOutPointer := ExecScript(LScript, LOutLength);
-      Writeln('Parse output');
-      Writeln('Information count: ', LOutLength);
       LOutArr := ParseSoccerOutputToArray(LOutPointer, LOutLength);
       if Length(LOutArr) > 0 then
         if LOutArr[0] = 'error' then
