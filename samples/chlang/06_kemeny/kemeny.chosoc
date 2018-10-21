@@ -1,0 +1,18 @@
+START[voting]
+//
+Kemeny is a Condorcet extension (which means
+that it finds a Condorcet winner if there is
+one) and is pretty good rule.
+
+In our implementation it's also an example of
+a DLL rule (rule, which isn't implemented in core,
+but in external DLL) and is resolute (always returns
+a single winner). But this rule is pretty slow
+for many alternatives (and also for many voters,
+but it's optimized to handle more voters)
+\\
+IMPORT[kemeny]
+VOTE(borda->kemeny->condorcet)
+VOTE(kemeny->condorcet->borda)
+VOTE(condorcet->kemeny->borda)
+DECIDE!
