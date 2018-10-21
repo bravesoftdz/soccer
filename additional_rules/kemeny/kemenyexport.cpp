@@ -47,7 +47,7 @@ extern "C"
 
 		//The first alternative is a winner
 		(*out_winners) = (wchar_t **)malloc(sizeof(wchar_t *));
-		(*out_winners)[0] = (wchar_t *)malloc(sizeof(wchar_t) * (winners.size() + 1));
+		(*out_winners)[0] = (wchar_t *)malloc(sizeof(wchar_t) * (winners.at(0).length() + 1));
 		wcscpy((*out_winners)[0], winners.at(0).c_str());
 
 		//As we take only the first alternative, there is always a single winner

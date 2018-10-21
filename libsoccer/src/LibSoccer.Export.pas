@@ -21,7 +21,6 @@ function ExecScript(AScript: PChar; var OutLength: Int32): PPChar;
 var
   LSoccer: TSoccer;
   LStrList: TList<string>;
-  LStr: string;
   i: integer;
   LOutString: string;
 begin

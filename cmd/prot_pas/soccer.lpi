@@ -23,7 +23,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="condorcet.chosoc"/>
+        <CommandLineParams Value="condorcet.chosoc -r"/>
       </local>
     </RunParams>
     <Units Count="1">

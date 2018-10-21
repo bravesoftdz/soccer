@@ -37,10 +37,16 @@ var
   LTest: UnicodeString;
   LOutArr: TStringArray;
   i: integer;
+  LReadLnFlag: boolean;
 
 begin
   if ParamCount > 0 then
-    LFileName := ParamStr(1)
+  begin
+    LFileName := ParamStr(1);
+    if ParamCount > 1 then
+      if ParamStr(1) = '-r' then
+        LReadLnFlag := True;
+  end
   else
   begin
     WriteLn('No file specified');
@@ -50,10 +56,14 @@ begin
   LOutLength := 0;
   try
     try
+      Writeln('Load from file');
       LStringList.LoadFromFile(LFileName);
       LTest := UnicodeString(Copy(LStringList.Text, 1, Length(LStringList.Text)));
       LScript := PWideChar(LTest);
+      Writeln('Calling core');
       LOutPointer := ExecScript(LScript, LOutLength);
+      Writeln('Parse output');
+      Writeln('Information count: ', LOutLength);
       LOutArr := ParseSoccerOutputToArray(LOutPointer, LOutLength);
       if Length(LOutArr) > 0 then
         if LOutArr[0] = 'error' then
@@ -79,5 +89,6 @@ begin
     FreeAndNil(LStringList);
     FreeSoccerPtr(LOutPointer, LOutLength);
   end;
-  ReadLn;
+  if LReadLnFlag then
+    ReadLn;
 end.
