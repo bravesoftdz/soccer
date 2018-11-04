@@ -2,28 +2,31 @@
 #include <winbase.h>
 #include <windef.h>
 #include <stdio.h>
+#include <wchar.h>
 
-typedef int (*ExecScript)(char*, char***, int*);
+typedef wchar_t** (*ExecScript)(wchar_t*, int*);
+typedef void (*FreeSoccerPtr)(wchar_t***, int);
 
-void main()
+int main()
 {
-    int status = 0;
     ExecScript _ExecScript;
+    FreeSoccerPtr _FreeSoccerPtr;
     HINSTANCE testLibrary = LoadLibrary("libsoccer.dll");
 
     if (testLibrary)
     {
         _ExecScript = (ExecScript)GetProcAddress(testLibrary, "ExecScript");
+        _FreeSoccerPtr = (FreeSoccerPtr)GetProcAddress(testLibrary, "FreeSoccerPtr");
         if (_ExecScript)
         {
-            char *a_script = "Hello,222";
-            char** out_array = NULL;
+            wchar_t *a_script = L"START[voting] IMPORT[plurality] VOTE(a->b) DECIDE!";
             int out_length = 0;
-            _ExecScript(a_script, &out_array, &out_length);
+            wchar_t** out_array = _ExecScript(a_script, &out_length);
             printf("Executed, length: %d\n", out_length);
             for (int i = 0; i < out_length; i++){
-                printf("%s\n", out_array[i]);
+                wprintf(L"%ls\n", out_array[i]);
             }
+            _FreeSoccerPtr(&out_array, out_length);
         }
         FreeLibrary(testLibrary);
     }

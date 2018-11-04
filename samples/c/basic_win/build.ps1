@@ -1,0 +1,1 @@
+gcc .\basic.c -Wall -o basic.exe
