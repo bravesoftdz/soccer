@@ -152,7 +152,7 @@ lib/
 #-----------------------------------user-defined------------------------------------------
 
 #DelphiCodeCoverage reports
-tests/Win32/Debug/coverage/*
+core/tests/Win32/Debug/coverage/*
 #DUnitX report
 *dunitx-results.xml
 #VSCode settings
