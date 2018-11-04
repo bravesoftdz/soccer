@@ -19,7 +19,7 @@ DECIDE!
 3. Run in command line:
 
 ```
-soccer .\getstarted.chosoc file
+soccer .\getstarted.chosoc
 ```
 4. Look at the winner
 ```
