@@ -1,6 +1,6 @@
 # soccer
 
-soccer is an engine for collective decision making. In the current version you can organize voting to pick a winning alternative using chosoc (choice language)
+soccer is an engine for collective decision making. In the current version you can organize voting to pick a winning alternative using chlang (choice language)
 
 ## Getting Started
 
@@ -29,7 +29,7 @@ Winners: fruits
 
 ## Documentation
 
-See our [wiki](https://github.com/Zawuza/soccer/wiki) for an extensive documentation of soccer and chosoc.
+See our [wiki](https://github.com/Zawuza/soccer/wiki) for an extensive documentation of soccer and chlang.
 You can also explore samples delivered with our program.
 
 ## Running the tests
