@@ -1,6 +1,6 @@
 START[voting]
 //This example illustrates usage of comments
-  In chosoc there are only multiline comments.
+  In chlang there are only multiline comments.
   You start a comment with "//" symbols and 
   a command separator (!important!) and end
   a comment with "\\" and a command separator.
