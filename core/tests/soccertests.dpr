@@ -1,11 +1,5 @@
 program soccertests;
 
-{ ATTENTON
-  To compile tests you need to set two environment variables:
-  1)DUNITX - path to DUnitX
-  2)LEAKCHECK - path to Delphi LeakCheck (copy also "extern" LeakCheck units to that path)
-}
-
 {$IFNDEF TESTINSIGHT}
 {$APPTYPE CONSOLE}
 {$ENDIF}{$STRONGLINKTYPES ON}

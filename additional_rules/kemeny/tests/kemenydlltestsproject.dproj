@@ -52,10 +52,10 @@
         <UsingDelphiRTL>true</UsingDelphiRTL>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
-        <DCC_UnitSearchPath>$(DUnitX);$(LEAKCHECK);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <SanitizedProjectName>kemenydlltestsproject</SanitizedProjectName>
         <VerInfo_Locale>1031</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_UnitSearchPath>..\..\..\dependencies\DUnitX;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_UseMSBuildExternally>true</DCC_UseMSBuildExternally>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
@@ -95,6 +95,8 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\..\..\dependencies\delphi-leakcheck\LeakCheck.pas"/>
+        <DCCReference Include="..\..\..\dependencies\delphi-leakcheck\LeakCheck.Utils.pas"/>
         <DCCReference Include="KemenyDLLTests.pas"/>
         <DCCReference Include="..\..\..\core\src\Soccer.Parser.pas"/>
         <DCCReference Include="..\..\..\core\src\Soccer.Voting.AbstractRule.pas"/>
@@ -112,6 +114,15 @@
         <DCCReference Include="..\..\..\core\src\Soccer.Domain.Factory.pas"/>
         <DCCReference Include="..\..\..\core\src\Soccer.Exceptions.pas"/>
         <DCCReference Include="..\..\..\core\src\Soccer.Main.pas"/>
+        <DCCReference Include="..\..\..\dependencies\delphi-leakcheck\DUnitX.MemoryLeakMonitor.LeakCheck.pas"/>
+        <DCCReference Include="..\..\..\dependencies\DUnitX\DUnitX.TestFramework.pas"/>
+        <DCCReference Include="..\..\..\dependencies\DUnitX\DUnitX.Assert.pas"/>
+        <DCCReference Include="..\..\..\dependencies\DUnitX\DUnitX.Loggers.Console.pas"/>
+        <DCCReference Include="..\..\..\dependencies\DUnitX\DUnitX.Loggers.XML.NUnit.pas"/>
+        <None Include="..\..\..\dependencies\DUnitX\DUNitX.Loggers.GUIX.vlb"/>
+        <None Include="..\..\..\dependencies\DUnitX\DUnitX.MemoryLeaks.inc"/>
+        <None Include="..\..\..\dependencies\DUnitX\DUnitX.Stacktrace.inc"/>
+        <None Include="..\..\..\dependencies\DUnitX\DUnitX.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -143,8 +154,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
+                <DeployFile LocalName="Win32\Debug\kemenydlltestsproject.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>kemenydlltestsproject.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -153,14 +165,37 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
+                    <Platform Name="iOSSimulator">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\dependencies\DUnitX\DUNitX.Loggers.GUIX.vlb" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win32\Debug\kemenydlltestsproject.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\..\dependencies\DUnitX\DUnitX.MemoryLeaks.inc" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
-                        <RemoteName>kemenydlltestsproject.exe</RemoteName>
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\dependencies\DUnitX\DUnitX.Stacktrace.inc" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\..\dependencies\DUnitX\DUnitX.inc" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

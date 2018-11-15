@@ -31,9 +31,11 @@ if($buildruntests){
     .\out\kemeny.exe
     Set-Location ..\..
 
-    #Compile and run kemeny Delphi tests
+    #Compile kemeny rule DLL
     Set-Location .\additional_rules\kemeny
     .\builddll
+	
+	#Compile and run Delphi kemeny tests
     Copy-Item .\out\kemenydll.dll .\tests\Win32\Debug\kemenydll.dll
     Write-Output "---KEMENY DELPHI UNIT TESTS---"
     Set-Location .\tests
@@ -41,6 +43,13 @@ if($buildruntests){
     Set-Location .\Win32\Debug
     .\kemenydlltestsproject.exe
     Set-Location ..\..\..\..\..\
+	
+    #Compile and run core tests
+    Write-Output "---CORE TESTS---"
+    Set-Location core\tests
+    .\externcompile.bat
+    .\CreateCoverageReport.ps1
+    Set-Location ..\..
 }
 
 Set-Location .\deploy

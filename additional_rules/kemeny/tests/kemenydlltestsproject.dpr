@@ -5,40 +5,34 @@ program kemenydlltestsproject;
 {$ENDIF}{$STRONGLINKTYPES ON}
 
 uses
-  LeakCheck,
-  LeakCheck.Utils,
+  LeakCheck in '..\..\..\dependencies\delphi-leakcheck\LeakCheck.pas',
+  LeakCheck.Utils in '..\..\..\dependencies\delphi-leakcheck\LeakCheck.Utils.pas',
   System.SysUtils,
-{$IFDEF TESTINSIGHT}
+  {$IFDEF TESTINSIGHT}
   TestInsight.DUnitX,
-{$ENDIF }
-  DUnitX.Loggers.Console,
-  DUnitX.Loggers.Xml.NUnit,
-  DUnitX.TestFramework,
-  DUnitX.MemoryLeakMonitor.LeakCheck,
+  {$ENDIF }
   KemenyDLLTests in 'KemenyDLLTests.pas',
   Soccer.Parser in '..\..\..\core\src\Soccer.Parser.pas',
-  Soccer.Voting.AbstractRule
-    in '..\..\..\core\src\Soccer.Voting.AbstractRule.pas',
+  Soccer.Voting.AbstractRule in '..\..\..\core\src\Soccer.Voting.AbstractRule.pas',
   Soccer.Voting.Actions in '..\..\..\core\src\Soccer.Voting.Actions.pas',
   Soccer.Voting.Domain in '..\..\..\core\src\Soccer.Voting.Domain.pas',
-  Soccer.Voting.Preferences
-    in '..\..\..\core\src\Soccer.Voting.Preferences.pas',
-  Soccer.Voting.RuleChooser
-    in '..\..\..\core\src\Soccer.Voting.RuleChooser.pas',
-  Soccer.Voting.RulePreferenceList
-    in '..\..\..\core\src\Soccer.Voting.RulePreferenceList.pas',
+  Soccer.Voting.Preferences in '..\..\..\core\src\Soccer.Voting.Preferences.pas',
+  Soccer.Voting.RuleChooser in '..\..\..\core\src\Soccer.Voting.RuleChooser.pas',
+  Soccer.Voting.RulePreferenceList in '..\..\..\core\src\Soccer.Voting.RulePreferenceList.pas',
   Soccer.Voting.RulesDict in '..\..\..\core\src\Soccer.Voting.RulesDict.pas',
   Soccer.VotingRules.Borda in '..\..\..\core\src\Soccer.VotingRules.Borda.pas',
-  Soccer.VotingRules.Condorcet
-    in '..\..\..\core\src\Soccer.VotingRules.Condorcet.pas',
-  Soccer.VotingRules.DLLRule
-    in '..\..\..\core\src\Soccer.VotingRules.DLLRule.pas',
-  Soccer.VotingRules.Plurality
-    in '..\..\..\core\src\Soccer.VotingRules.Plurality.pas',
+  Soccer.VotingRules.Condorcet in '..\..\..\core\src\Soccer.VotingRules.Condorcet.pas',
+  Soccer.VotingRules.DLLRule in '..\..\..\core\src\Soccer.VotingRules.DLLRule.pas',
+  Soccer.VotingRules.Plurality in '..\..\..\core\src\Soccer.VotingRules.Plurality.pas',
   Soccer.Domain.Abstract in '..\..\..\core\src\Soccer.Domain.Abstract.pas',
   Soccer.Domain.Factory in '..\..\..\core\src\Soccer.Domain.Factory.pas',
   Soccer.Exceptions in '..\..\..\core\src\Soccer.Exceptions.pas',
-  Soccer.Main in '..\..\..\core\src\Soccer.Main.pas';
+  Soccer.Main in '..\..\..\core\src\Soccer.Main.pas',
+  DUnitX.MemoryLeakMonitor.LeakCheck in '..\..\..\dependencies\delphi-leakcheck\DUnitX.MemoryLeakMonitor.LeakCheck.pas',
+  DUnitX.TestFramework in '..\..\..\dependencies\DUnitX\DUnitX.TestFramework.pas',
+  DUnitX.Assert in '..\..\..\dependencies\DUnitX\DUnitX.Assert.pas',
+  DUnitX.Loggers.Console in '..\..\..\dependencies\DUnitX\DUnitX.Loggers.Console.pas',
+  DUnitX.Loggers.XML.NUnit in '..\..\..\dependencies\DUnitX\DUnitX.Loggers.XML.NUnit.pas';
 
 var
   runner: ITestRunner;
