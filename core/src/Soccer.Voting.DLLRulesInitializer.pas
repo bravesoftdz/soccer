@@ -17,7 +17,7 @@ implementation
 
 function GetDLLRulesPath: string;
 begin
-  Result := '.\dllrules\'
+  Result := ExtractFileDir(ParamStr(0)) + '\dllrules\';
 end;
 
 var
