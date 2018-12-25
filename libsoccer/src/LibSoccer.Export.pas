@@ -39,7 +39,7 @@ begin
       on E: Exception do
       begin
         GetMem(Result, SizeOf(PWideChar) * 2);
-        Result^ := PChar('error');
+        Result^ := StrNew(PChar('error'));
         (Result + 1)^ := StrNew(PChar(E.ClassName + ' :' + E.Message));
         OutLength := 2;
       end;
