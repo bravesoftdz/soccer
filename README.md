@@ -6,7 +6,7 @@ soccer is an engine for collective decision making. In the current version you c
 
 1. Download archive from [Releases](https://github.com/Zawuza/soccer/releases), unzip it into some folder and add this folder to the PATH variable
 
-2. Copy-paste the following into a getstarted.chosoc file
+2. Copy-paste the following into a getstarted.chosoc file (make sure it's ANSI, Unicode is not supported)
 
 ```
 START[voting]       // start an election \\
