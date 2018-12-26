@@ -13,7 +13,4 @@ cd .\04_condorcet_paradox\
 cd ..
 cd .\05_borda\
 ..\..\..\..\soccer .\borda.chosoc
-cd ..
-cd .\06_kemeny\
-..\..\..\..\soccer .\kemeny.chosoc
 cd ..\..\..\..\
