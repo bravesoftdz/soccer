@@ -4,7 +4,7 @@ soccer is an engine for collective decision making. In the current version you c
 
 ## Getting Started
 
-1. Download archive from [Releases](https://github.com/Zawuza/soccer/releases), unzip it into some folder and add this folder to the PATH variable
+1. Download archive from [Releases](https://github.com/Zawuza/soccer/releases), unzip it into some folder and add this folder to the PATH variable (more detailed description [here](https://github.com/Zawuza/soccer/wiki/Installation-of-soccer))
 
 2. Copy-paste the following into a getstarted.chosoc file (make sure it's ANSI, Unicode is not supported)
 
